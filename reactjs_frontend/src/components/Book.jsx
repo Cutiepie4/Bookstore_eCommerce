@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { addBook, updateBook } from '../redux/bookSlice';
 
-
 function Book(props) {
 
     const [image, setImage] = useState(null);
