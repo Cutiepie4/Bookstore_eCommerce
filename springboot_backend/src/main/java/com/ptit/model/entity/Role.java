@@ -15,18 +15,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "roles")
 public class Role {
-	
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Enumerated(EnumType.STRING)
-	private RoleEnum role;
-    
+	private String role;
+
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
 }

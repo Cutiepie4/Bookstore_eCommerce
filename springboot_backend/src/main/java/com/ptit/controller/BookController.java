@@ -24,6 +24,11 @@ public class BookController {
 	@Autowired
 	BookService bookService;
 	
+	@GetMapping("/test")
+	public String a() {
+		return "login success";
+	}
+	
 	@GetMapping("/books")
 	public List<BookDto> getAllBooks() {
 		return bookService.findAll();
