@@ -38,23 +38,7 @@ public class SecurityConfiguration {
 	JWTAuthenticationFilter jwtAuthenticationFilter() {
 		return new JWTAuthenticationFilter();
 	}
-
-	@Bean
-	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
-		http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-		http.csrf(csrf -> csrf.disable());
-
-		http.authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-				.requestMatchers("/api/auth/**").permitAll().anyRequest().authenticated());
-
-		http.formLogin(login -> login.loginPage("http://localhost:3000/login"));
-		
-		http.httpBasic(withDefaults());
-		return http.build();
-	}
-
+	
 	@Bean
 	AuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -69,4 +53,21 @@ public class SecurityConfiguration {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
 
+	@Bean
+	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+		http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+		http.csrf(csrf -> csrf.disable());
+
+		http.authorizeHttpRequests(authorize -> authorize
+				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+				.requestMatchers("/api/auth/**").permitAll().anyRequest().authenticated()
+		);
+
+		http.formLogin(login -> login.loginPage("http://localhost:3000/login"));
+		
+		http.httpBasic(withDefaults());
+		return http.build();
+	}
 }

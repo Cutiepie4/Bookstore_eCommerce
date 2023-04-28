@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { deleteBook, fetchBooks } from '../redux/bookSlice';
+import { deleteBook, fetchBooks } from '../redux/api';
 
 function Books() {
 

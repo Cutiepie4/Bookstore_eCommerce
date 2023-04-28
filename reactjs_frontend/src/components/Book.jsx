@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { addBook, updateBook } from '../redux/bookSlice';
+import { addBook, updateBook } from '../redux/api';
 
 function Book() {
 
@@ -74,7 +74,7 @@ function Book() {
                     </div>
                     <hr />
                     <div className="col-12">
-                        <button className="btn btn-success" onClick={handleSubmit}>{book.id == undefined ? 'Save' : 'Edit'}</button>
+                        <button className="btn btn-success" onClick={handleSubmit}>{book.id === undefined ? 'Save' : 'Edit'}</button>
                     </div>
                 </form>
 
@@ -85,7 +85,7 @@ function Book() {
                     <div className="card">
                         <div className="card-body">
                             <div className="upload-preview">
-                                <img id="image-preview" className="card-img-top" src={image} />
+                                <img id="image-preview" className="card-img-top" src={image} alt='abc' />
                             </div>
                         </div>
                     </div>

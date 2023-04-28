@@ -1,35 +1,10 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import axios from "axios"
+import { createSlice } from "@reduxjs/toolkit"
+import { fetchBooks, addBook, updateBook, deleteBook } from "./api";
 
 const initialState = {
     listBooks: [],
     isLoading: true,
 }
-
-const bookApi = axios.create({
-    baseURL: 'http://localhost:8080/api'
-})
-
-export const fetchBooks = createAsyncThunk('bookReducers/fetchBooks', async () => {
-    const res = await bookApi.get('/books');
-    return res.data;
-})
-
-export const addBook = createAsyncThunk('bookReducers/addBook', async (book) => {
-    console.log(book)
-    await bookApi.post('/books/new', book);
-    return book;
-})
-
-export const updateBook = createAsyncThunk('bookReducers/updateBook', async (book) => {
-    await bookApi.put('/books/update', book);
-    return book;
-})
-
-export const deleteBook = createAsyncThunk('bookReducers/deleteBook', async (id) => {
-    await bookApi.delete(`/books/${id}`);
-    return id;
-})
 
 export const bookSlice = createSlice({
     name: 'bookReducers',

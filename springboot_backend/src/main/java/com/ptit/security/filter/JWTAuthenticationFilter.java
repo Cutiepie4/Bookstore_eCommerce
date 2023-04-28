@@ -41,7 +41,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
 		String token = getJWTFromRequest(request);
 		if (StringUtils.hasText(token)) {
-			System.out.println(token);
 			Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY.getBytes());
 			JWTVerifier verifier = JWT.require(algorithm).build();
 			DecodedJWT decodedJWT = verifier.verify(token);
