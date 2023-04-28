@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { deleteBook, fetchBooks } from '../redux/bookSlice';
 
-function Books(props) {
+function Books() {
 
     const navigate = useNavigate();
 
@@ -19,14 +19,15 @@ function Books(props) {
         <div className="container">
             <h1>Library</h1>
             <div>
-                <button className="btn btn-primary" onClick={() => { navigate('/books/0', { state: { book: {} } }) }}>Add New Laptop</button>
+                <button className="btn btn-primary" style={{ marginRight: '5px' }} onClick={() => { navigate('/books/0', { state: { book: {} } }) }}>Add New Laptop</button>
+                <button className="btn btn-secondary" onClick={() => { dispatch(fetchBooks()) }}>Refresh</button>
             </div>
 
             <br />
             <table className="table table-striped table-bordered">
                 <thead className="table-dark">
                     <tr>
-                        <th>Index</th>
+                        <th>Id</th>
                         <th>Title</th>
                         <th>Author</th>
                         <th>Description</th>
@@ -41,7 +42,7 @@ function Books(props) {
                 <tbody>
                     {!isLoading ? listBooks.map((item, index) => (
                         <tr key={item.id}>
-                            <td>{index}</td>
+                            <td>{item.id}</td>
                             <td>{item.title}</td>
                             <td>{item.author}</td>
                             <td>{item.description}</td>

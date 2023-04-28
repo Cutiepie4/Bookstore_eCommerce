@@ -2,7 +2,7 @@ import React from 'react';
 import backgroundImage from '../assets/images/background.jpg'
 import '../styles/login.scss';
 
-function Login(props) {
+function Login() {
 
     const styles = {
         backgroundImage: `url(${backgroundImage})`,

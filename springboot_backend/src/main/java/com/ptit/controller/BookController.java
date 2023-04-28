@@ -36,6 +36,7 @@ public class BookController {
 	
 	@PostMapping("/books/new")
 	public void addBook(@RequestBody BookDto book) {
+		book.setId(null);
 		bookService.save(book);
 	}
 	
