@@ -57,7 +57,7 @@ function Book() {
                     <div className='row'>
                         <div className="col-6">
                             <label className="form-label" for="">Category</label>
-                            <select className="border-1 form-select" value={book.category} onChange={(e) => { setBook({ ...book, category: e.target.value }) }}>
+                            <select className="border-1 form-select" value={book.category ? book.category : 'Action'} onChange={(e) => { setBook({ ...book, category: e.target.value }) }}>
                                 <option value="Action">Action</option>
                                 <option value="Comedy">Comedy</option>
                                 <option value="Fantasy">Fantasy</option>

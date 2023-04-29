@@ -1,14 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import authService from '../service/AuthenticationService'
 
-const bookApi = axios.create({
+const api = axios.create({
     baseURL: 'http://localhost:8080/api'
 })
 
-const token = sessionStorage.getItem('token');
-
-const createConfig = (token) => {
+const createConfig = () => {
+    const token = sessionStorage.getItem('token');
     return {
         headers: {
             Authorization: `Bearer ${token}`
@@ -16,32 +14,30 @@ const createConfig = (token) => {
     }
 }
 
-export default bookApi;
+export default api;
 
-export const logIn = async (credential) => {
-    return bookApi.post('/auth/login', credential)
-        .then(res => {
-            authService.saveToken(res.data.token);
-        })
+export const login = createAsyncThunk('authReducers/login', async (credential) => {
+    return api.post('/auth/login', credential)
+        .then(res => res)
         .catch(error => error.response);
-}
+})
 
 export const fetchBooks = createAsyncThunk('bookReducers/fetchBooks', async () => {
-    const res = await bookApi.get('/books', createConfig(token));
+    const res = await api.get('/books', createConfig());
     return res.data;
 })
 
 export const addBook = createAsyncThunk('bookReducers/addBook', async (book) => {
-    await bookApi.post('/books/new', book, createConfig(token));
+    await api.post('/books/new', book, createConfig());
     return book;
 })
 
 export const updateBook = createAsyncThunk('bookReducers/updateBook', async (book) => {
-    await bookApi.put('/books/update', book, createConfig(token));
+    await api.put('/books/update', book, createConfig());
     return book;
 })
 
 export const deleteBook = createAsyncThunk('bookReducers/deleteBook', async (id) => {
-    await bookApi.delete(`/books/${id}`, createConfig(token));
+    await api.delete(`/books/${id}`, createConfig());
     return id;
 })

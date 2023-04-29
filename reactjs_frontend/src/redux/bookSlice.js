@@ -4,6 +4,7 @@ import { fetchBooks, addBook, updateBook, deleteBook } from "./api";
 const initialState = {
     listBooks: [],
     isLoading: true,
+    isLoggedIn: false
 }
 
 export const bookSlice = createSlice({

@@ -40,7 +40,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 
 		String token = getJWTFromRequest(request);
-		if (StringUtils.hasText(token)) {
+		if (StringUtils.hasText(token) && !token.equalsIgnoreCase("null")) {
 			Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY.getBytes());
 			JWTVerifier verifier = JWT.require(algorithm).build();
 			DecodedJWT decodedJWT = verifier.verify(token);

@@ -2,6 +2,10 @@ package com.ptit.security.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,6 +21,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.ptit.security.filter.JWTAuthenticationFilter;
 import com.ptit.service.impl.UserDetailsServiceImpl;
@@ -38,7 +46,7 @@ public class SecurityConfiguration {
 	JWTAuthenticationFilter jwtAuthenticationFilter() {
 		return new JWTAuthenticationFilter();
 	}
-	
+
 	@Bean
 	AuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -60,14 +68,22 @@ public class SecurityConfiguration {
 		http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		http.csrf(csrf -> csrf.disable());
 
-		http.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-				.requestMatchers("/api/auth/**").permitAll().anyRequest().authenticated()
-		);
+		http.authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+				.requestMatchers("/api/auth/**").permitAll()
+//				.requestMatchers(HttpMethod.GET, "/api/books").permitAll()
+				.anyRequest().authenticated());
 
 		http.formLogin(login -> login.loginPage("http://localhost:3000/login"));
-		
+		http.logout(logout -> logout.logoutUrl("/api/auth/logout"));
+
+		http.headers(t -> t.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Credentials", "true"))
+				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "http://localhost:3000"))
+				.addHeaderWriter(
+						new StaticHeadersWriter("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"))
+				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Headers","Origin, X-Api-Key, X-Requested-With, Content-Type, Accept, Authorization")));
+
 		http.httpBasic(withDefaults());
 		return http.build();
 	}
+
 }
