@@ -11,6 +11,8 @@ function Books() {
 
     const { isLoading, listBooks } = useSelector(state => state.bookReducer);
 
+    const { isLoggedIn, role } = useSelector(state => state.authReducer);
+
     useEffect(() => {
         dispatch(fetchBooks());
     }, []);
@@ -19,8 +21,8 @@ function Books() {
         <div className="container">
             <h1>Library</h1>
             <div>
-                <button className="btn btn-primary" style={{ marginRight: '5px' }} onClick={() => { navigate('/books/0', { state: { book: {} } }) }}>Add New Laptop</button>
-                <button className="btn btn-secondary" onClick={() => { dispatch(fetchBooks()) }}>Refresh</button>
+                {role === 'ADMIN' && <button className="btn btn-primary" style={{ marginRight: '5px' }} onClick={() => { navigate('/books/0', { state: { book: {} } }) }}>Add New Laptop</button>}
+                <button className="btn btn-success" onClick={() => { dispatch(fetchBooks()) }}>Refresh</button>
             </div>
 
             <br />
@@ -35,7 +37,7 @@ function Books() {
                         <th>Page count</th>
                         <th>Sold count</th>
                         <th>Date Established</th>
-                        <th>Action</th>
+                        {role === 'ADMIN' && <th>Action</th>}
                     </tr>
                 </thead>
 
@@ -50,10 +52,10 @@ function Books() {
                             <td>{item.page}</td>
                             <td>{item.sold}</td>
                             <td>{item.date}</td>
-                            <td>
+                            {role === 'ADMIN' && <td>
                                 <button style={{ 'marginRight': '8px' }} className="btn btn-success" onClick={() => { navigate(`/books/${item.id}`, { state: { book: item } }) }}>Edit</button>
                                 <button className="btn btn-danger" onClick={() => { dispatch(deleteBook(item.id)) }}>Delete</button>
-                            </td>
+                            </td>}
                         </tr>
                     )) : <tr key="0"><td><h3>Loading...</h3></td></tr>}
                 </tbody>
