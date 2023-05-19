@@ -1,29 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { addBook, updateBook } from '../redux/api';
+import { useNavigate, useParams } from 'react-router-dom';
+import { addBook, findBookById, updateBook } from '../redux/api';
+
 
 function Book() {
 
+    const { id } = useParams();
+
     const [image, setImage] = useState(null);
 
-    const { state } = useLocation();
+    const [book, setBook] = useState({});
 
-    const [book, setBook] = useState(state.book);
-
-    const [isEditable, setIsEditable] = useState(book.id === undefined ? true : false);
+    const [isEditable, setIsEditable] = useState(id == 0 ? true : false);
 
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
 
-    const handleSubmit = (e, id) => {
+    useEffect(() => {
+        const findBook = async () => {
+            try {
+                const bookData = await findBookById(id);
+                setBook(bookData);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        findBook();
+    }, [id])
+
+    const handleSubmit = (e) => {
         if (!isEditable) {
             e.preventDefault();
             setIsEditable(true);
             return;
         }
-        id === 0 ? dispatch(addBook(book)) : dispatch(updateBook(book));
+        const formData = new FormData();
+        if (image !== null) formData.append('image', image);
+        formData.append('book', JSON.stringify(book));
+        id === 0 ? dispatch(addBook(formData)) : dispatch(updateBook(formData));
         navigate('/books');
     }
 
@@ -31,14 +47,14 @@ function Book() {
         <form className="container form-control" >
             <h1>Book</h1>
             <div className="row">
-                <form className="col-lg-6">
+                <div className="col-lg-6">
                     <div className="row">
                         <div className="col">
-                            <label for="" className="col-lg-10 form-label">Title</label>
+                            <label className="col-lg-10 form-label">Title</label>
                             <input type="text" className="col-lg-10  form-control" value={book.title} onChange={(e) => { setBook({ ...book, title: e.target.value }) }} disabled={!isEditable} />
                         </div>
                         <div className="col">
-                            <label for="" className="col-lg-10 form-label">Author</label>
+                            <label className="col-lg-10 form-label">Author</label>
                             <input type="text" className="col-lg-10  form-control" value={book.author} onChange={(e) => { setBook({ ...book, author: e.target.value }) }} disabled={!isEditable} />
                         </div>
                     </div>
@@ -51,12 +67,12 @@ function Book() {
 
                     <div className="row">
                         <div className="col">
-                            <label for="" className="col-lg-10 form-label">Date
+                            <label className="col-lg-10 form-label">Date
                                 Established</label>
                             <input type="date" className="col-lg-10  form-control" value={book.date} onChange={(e) => { setBook({ ...book, date: e.target.value }) }} disabled={!isEditable} />
                         </div>
                         <div className="col">
-                            <label for="" className="col-lg-10 form-label">Number of pages</label>
+                            <label className="col-lg-10 form-label">Number of pages</label>
                             <input type="number" className="col-lg-10  form-control" value={book.page} onChange={(e) => { setBook({ ...book, page: e.target.value }) }} disabled={!isEditable} />
                         </div>
                     </div>
@@ -64,15 +80,20 @@ function Book() {
                     <div className='row'>
                         <div className="col-6">
                             <label className="form-label">Category</label>
-                            <select className="border-1 form-select" onChange={(e) => { setBook({ ...book, category: e.target.value }) }} disabled={!isEditable} >
-                                <option disabled selected>Select a category</option>
-                                <option value="Action">Action</option>
-                                <option value="Comedy">Comedy</option>
-                                <option value="Fantasy">Fantasy</option>
-                                <option value="Historical">Historical</option>
-                                <option value="Horror">Horror</option>
-                                <option value="Romance">Romance</option>
-                                <option value="Thriller">Thriller</option>
+                            <select
+                                className="border-1 form-select"
+                                onChange={(e) => { setBook({ ...book, category: e.target.value }) }}
+                                disabled={!isEditable}
+                                defaultValue={book.category ? book.category : "default"}
+                            >
+                                <option disabled value="default">Select a category</option>
+                                <option value="Action" selected={book.category === "Action"}>Action</option>
+                                <option value="Comedy" selected={book.category === "Comedy"}>Comedy</option>
+                                <option value="Fantasy" selected={book.category === "Fantasy"}>Fantasy</option>
+                                <option value="Historical" selected={book.category === "Historical"}>Historical</option>
+                                <option value="Horror" selected={book.category === "Horror"}>Horror</option>
+                                <option value="Romance" selected={book.category === "Romance"}>Romance</option>
+                                <option value="Thriller" selected={book.category === "Thriller"}>Thriller</option>
                             </select>
                         </div>
                         <div className="col-6">
@@ -82,18 +103,34 @@ function Book() {
                     </div>
                     <hr />
                     <div className="col-12">
-                        <button className="btn btn-success" onClick={handleSubmit}>{book.id === undefined ? 'Add' : (isEditable ? 'Save' : 'Edit')}</button>
+                        <button className="btn btn-success" onClick={handleSubmit}>{id === 0 ? 'Add' : (isEditable ? 'Save' : 'Edit')}</button>
                     </div>
-                </form>
+                    {/* <label>{book.imagePath}</label> */}
+                </div>
 
                 <div className="col-lg-6">
                     <div>
-                        <input type="file" accept="image/*" onChange={(e) => { setImage(e.target.files) }} />
+                        <input type="file" accept="image/*" onChange={(e) => { setImage(e.target.files[0]) }} disabled={!isEditable} />
                     </div>
                     <div className="card">
                         <div className="card-body">
                             <div className="upload-preview">
-                                <img id="image-preview" className="card-img-top" src={image} alt='abc' />
+                                {image === null && book.imagePath && (
+                                    <img
+                                        id="image-preview"
+                                        className="card-img-top"
+                                        src={require(`../assets/images/${book.imagePath}`)}
+                                        alt='book-cover'
+                                    />
+                                )}
+                                {image && (
+                                    <img
+                                        id="image-preview"
+                                        className="card-img-top"
+                                        src={URL.createObjectURL(image)}
+                                        alt='book-cover'
+                                    />
+                                )}
                             </div>
                         </div>
                     </div>

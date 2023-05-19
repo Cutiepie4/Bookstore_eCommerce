@@ -26,21 +26,21 @@ export const bookSlice = createSlice({
         },
         [addBook.fulfilled]: (state, action) => {
             state.isLoading = false;
-            state.listBooks = [...state.listBooks, action.payload];
+            state.listBooks = action.payload;
         },
         [updateBook.pending]: (state) => {
             state.isLoading = true;
         },
         [updateBook.fulfilled]: (state, action) => {
+            state.listBooks = action.payload;
             state.isLoading = false;
-            state.listBooks = [...state.listBooks.filter(item => item.id !== action.payload.id), action.payload];
         },
         [deleteBook.pending]: (state) => {
             state.isLoading = true;
         },
         [deleteBook.fulfilled]: (state, action) => {
+            state.listBooks = action.payload;
             state.isLoading = false;
-            state.listBooks = state.listBooks.filter(item => item.id !== action.payload)
         }
     }
 })

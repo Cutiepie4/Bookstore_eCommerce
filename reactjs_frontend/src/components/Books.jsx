@@ -53,13 +53,14 @@ function Books() {
                             <td>{item.sold}</td>
                             <td>{item.date}</td>
                             {role === 'ADMIN' && <td>
-                                <button style={{ 'marginRight': '8px' }} className="btn btn-success" onClick={() => { navigate(`/books/${item.id}`, { state: { book: item } }) }}>Edit</button>
+                                <button style={{ 'marginRight': '8px' }} className="btn btn-success" onClick={() => { navigate(`/books/${item.id}`) }}>Edit</button>
                                 <button className="btn btn-danger" onClick={() => { dispatch(deleteBook(item.id)) }}>Delete</button>
                             </td>}
                         </tr>
-                    )) : <tr key="0"><td><h3>Loading...</h3></td></tr>}
+                    )) : <tr key="@"><td><h3>Loading...</h3></td></tr>}
                 </tbody>
             </table>
+
         </div>
     )
 };

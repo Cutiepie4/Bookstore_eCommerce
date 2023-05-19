@@ -1,7 +1,8 @@
 package com.ptit.model.dto;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +13,22 @@ import lombok.NoArgsConstructor;
 public class BookDto {
 	private Long id;
 
-	private String title, author, category, description;
+	@Column(columnDefinition = "nvarchar(255)")
+	private String title;
 
-	private LocalDate date;
+	@Column(columnDefinition = "nvarchar(255)")
+	private String author;
+
+	@Column(columnDefinition = "nvarchar(255)")
+	private String category;
+
+	@Column(columnDefinition = "nvarchar(255)")
+	private String description;
+
+	private Date date;
 
 	private int sold, page;
+	
+	@Column(columnDefinition = "nvarchar(255)")
+	private String imagePath;
 }
