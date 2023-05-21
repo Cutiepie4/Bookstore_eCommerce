@@ -30,6 +30,10 @@ function Book() {
         findBook();
     }, [id])
 
+    useEffect(() => {
+        console.log(book)
+    }, [book])
+
     const handleSubmit = (e) => {
         if (!isEditable) {
             e.preventDefault();
@@ -78,7 +82,7 @@ function Book() {
                     </div>
                     <hr />
                     <div className='row'>
-                        <div className="col-6">
+                        <div className="col-4">
                             <label className="form-label">Category</label>
                             <select
                                 className="border-1 form-select"
@@ -96,9 +100,13 @@ function Book() {
                                 <option value="Thriller" selected={book.category === "Thriller"}>Thriller</option>
                             </select>
                         </div>
-                        <div className="col-6">
+                        <div className="col-4">
                             <label className="col-lg-10 form-label">Sold Copies</label>
                             <input type="number" className="col-lg-10  form-control" value={book.sold} onChange={(e) => { setBook({ ...book, sold: e.target.value }) }} disabled={!isEditable} />
+                        </div>
+                        <div className="col-4">
+                            <label className="col-lg-10 form-label">Price (vnd)</label>
+                            <input type="number" className="col-lg-10  form-control" value={book.price} onChange={(e) => { setBook({ ...book, price: e.target.value }) }} disabled={!isEditable} />
                         </div>
                     </div>
                     <hr />
@@ -117,7 +125,7 @@ function Book() {
                             <div className="upload-preview">
                                 {image === null && book.imagePath && (
                                     <img
-                                        id="image-preview"
+                                        style={{ maxHeight: '480px', width: 'auto' }}
                                         className="card-img-top"
                                         src={require(`../assets/images/${book.imagePath}`)}
                                         alt='book-cover'
@@ -125,7 +133,7 @@ function Book() {
                                 )}
                                 {image && (
                                     <img
-                                        id="image-preview"
+                                        style={{ maxHeight: '480px', width: 'auto' }}
                                         className="card-img-top"
                                         src={URL.createObjectURL(image)}
                                         alt='book-cover'

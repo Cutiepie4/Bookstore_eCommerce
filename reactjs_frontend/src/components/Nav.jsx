@@ -1,24 +1,49 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom'
-import { useSelector } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../redux/authSlice';
+import authService from '../service/AuthenticationService';
 
 function Nav() {
 
-    const { role } = useSelector(state => state.authReducer);
+    const { isLoggedIn, role, account } = useSelector(state => state.authReducer);
+
+    const dispatch = useDispatch();
+
+    const clearToken = () => {
+        dispatch(logout());
+        authService.clearSession();
+    }
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg navbar-light">
-                <NavLink className="navbar-brand">{role}</NavLink>
-                <div className="collapse navbar-collapse">
-                    <div className="navbar-nav">
-                        <NavLink className="nav-link navbar-nav" to="/books">Library </NavLink>
-                        <NavLink className="nav-link navbar-nav" to="/login">Login</NavLink>
-                        <NavLink className="nav-link navbar-nav" to="/logout">Logout</NavLink>
+            <div className="header">
+                <div className="browse">
+                    <NavLink style={{ textDecoration: 'none', color: '#8b939c' }} to={'/'}><div className="header-title">book<span>store</span></div></NavLink>
+                    <div className="search-bar">
+                        <input type="text" placeholder="Search Book" />
                     </div>
                 </div>
-            </nav>
+
+                <div className="profile">
+                    <div className='notification-icon'>1</div>
+                    <NavLink style={{ textDecoration: 'none', color: '#8b939c' }} to={'/cart'}>
+                        <div className="user-profile pe-3">
+                            <i class="fa-solid fa-cart-shopping fa-lg pe-2"></i>
+                            Cart
+                        </div>
+                    </NavLink>
+                    <div className="profile-menu">
+                        <i class="fa-solid fa-user fa-lg p-2"></i>
+                        {account ? account.username : 'Login'}
+                        <ul className="dropdown">
+                            {isLoggedIn ? (<li className='border-bottom'><NavLink>Manage user</NavLink></li>) : (<li><NavLink to="/login">Login</NavLink></li>)}
+                            {role == 'ADMIN' && (<li className='border-bottom'><NavLink to='/books'>Manage storage</NavLink></li>)}
+                            <li className='border-bottom' onClick={clearToken}><a href='http://localhost:8080/api/auth/logout'>Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div >
 
             <Outlet />
         </>

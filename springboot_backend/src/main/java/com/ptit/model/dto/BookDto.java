@@ -27,7 +27,7 @@ public class BookDto {
 
 	private Date date;
 
-	private int sold, page;
+	private int sold, page, price;
 	
 	@Column(columnDefinition = "nvarchar(255)")
 	private String imagePath;

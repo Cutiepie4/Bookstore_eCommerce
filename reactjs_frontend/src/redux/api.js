@@ -18,9 +18,9 @@ const createConfig = () => {
 
 export default api;
 
-export const login = createAsyncThunk('authReducers/login', async (credential) => {
-    return api.post('/auth/login', credential)
-        .then(res => res)
+export const login = createAsyncThunk('authReducers/login', async (account) => {
+    return api.post('/auth/login', account)
+        .then(response => { return { response, account } })
         .catch(error => error.response);
 })
 

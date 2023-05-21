@@ -5,8 +5,8 @@ import authService from "../service/AuthenticationService";
 let initialState = {
     isLoggedIn: false,
     loginMsg: '',
-    logoutMsg: 'Please log in.',
-    role: 'GUEST'
+    role: 'GUEST',
+    account: null
 }
 
 const authSlice = createSlice({
@@ -15,20 +15,20 @@ const authSlice = createSlice({
     reducers: {
         logout: (state) => {
             state.isLoggedIn = false;
-            state.logoutMsg = 'You logged out successfully'
             state.role = 'GUEST'
         }
     },
     extraReducers: {
         [login.fulfilled]: (state, action) => {
-            if (action.payload.status === 200) {
+            if (action.payload.response.status === 200) {
                 state.isLoggedIn = true;
-                state.loginMsg = 'You login successfully!!!';
-                state.logoutMsg = 'You already logged in';
-                authService.saveSession(action.payload.data);
+                state.loginMsg = '';
                 state.role = authService.getAuthority();
+                state.account = action.payload.account;
+                authService.saveSession(action.payload.response.data);
             }
             else {
+                state.account = null;
                 state.isLoggedIn = false;
                 state.loginMsg = 'Invalid account!';
             }

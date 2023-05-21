@@ -19,24 +19,25 @@ function Books() {
 
     return (
         <div className="container">
-            <h1>Library</h1>
+            <h1>Book Storage</h1>
             <div>
-                {role === 'ADMIN' && <button className="btn btn-primary" style={{ marginRight: '5px' }} onClick={() => { navigate('/books/0', { state: { book: {} } }) }}>Add New Laptop</button>}
-                <button className="btn btn-success" onClick={() => { dispatch(fetchBooks()) }}>Refresh</button>
+                {role === 'ADMIN' && <button className="btn btn-primary" style={{ marginRight: '5px' }} onClick={() => { navigate('/books/0', { state: { book: {} } }) }}>Add New Book</button>}
+                {/* <button className="btn btn-success" onClick={() => { dispatch(fetchBooks()) }}>Refresh</button> */}
             </div>
 
             <br />
             <table className="table table-striped table-bordered">
-                <thead className="table-dark">
+                <thead className="table-white">
                     <tr>
                         <th>Id</th>
                         <th>Title</th>
                         <th>Author</th>
                         <th>Description</th>
                         <th>Category</th>
-                        <th>Page count</th>
-                        <th>Sold count</th>
-                        <th>Date Established</th>
+                        <th>Page</th>
+                        <th>Sold</th>
+                        <th>Date</th>
+                        <th>Price (vnd)</th>
                         {role === 'ADMIN' && <th>Action</th>}
                     </tr>
                 </thead>
@@ -47,11 +48,17 @@ function Books() {
                             <td>{item.id}</td>
                             <td>{item.title}</td>
                             <td>{item.author}</td>
-                            <td>{item.description}</td>
+                            <td style={{
+                                maxWidth: '300px',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap'
+                            }}>{item.description}</td>
                             <td>{item.category}</td>
                             <td>{item.page}</td>
                             <td>{item.sold}</td>
                             <td>{item.date}</td>
+                            <td>{item.price.toLocaleString()}</td>
                             {role === 'ADMIN' && <td>
                                 <button style={{ 'marginRight': '8px' }} className="btn btn-success" onClick={() => { navigate(`/books/${item.id}`) }}>Edit</button>
                                 <button className="btn btn-danger" onClick={() => { dispatch(deleteBook(item.id)) }}>Delete</button>
@@ -61,7 +68,7 @@ function Books() {
                 </tbody>
             </table>
 
-        </div>
+        </div >
     )
 };
 
