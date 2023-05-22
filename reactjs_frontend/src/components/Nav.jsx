@@ -10,11 +10,6 @@ function Nav() {
 
     const dispatch = useDispatch();
 
-    const clearToken = () => {
-        dispatch(logout());
-        authService.clearSession();
-    }
-
     return (
         <>
             <div className="header">
@@ -39,7 +34,7 @@ function Nav() {
                         <ul className="dropdown">
                             {isLoggedIn ? (<li className='border-bottom'><NavLink>Manage user</NavLink></li>) : (<li><NavLink to="/login">Login</NavLink></li>)}
                             {role == 'ADMIN' && (<li className='border-bottom'><NavLink to='/books'>Manage storage</NavLink></li>)}
-                            <li className='border-bottom' onClick={clearToken}><a href='http://localhost:8080/api/auth/logout'>Logout</a></li>
+                            {isLoggedIn && (<li className='border-bottom' onClick={() => dispatch(logout())}><a href='http://localhost:8080/api/auth/logout'>Logout</a></li>)}
                         </ul>
                     </div>
                 </div>

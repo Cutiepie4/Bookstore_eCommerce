@@ -6,20 +6,33 @@ import Login from './components/Login';
 import Nav from './components/Nav';
 import Home from './components/Home';
 import Cart from './components/Cart';
+import AdminRoute from './AdminRoute';
+import UserRoute from './UserRoute';
+import BookDetail from './components/BookDetail';
+
 
 function App() {
   return (
-    <div>
-      <Routes>
+    <Routes>
+      <Route path='/book-detail' element={<BookDetail />} />
+
+      <Route path='/' element={<Nav />} >
         <Route path='/login' element={<Login />} />
-        <Route path='/' element={<Nav />} >
+        <Route index element={<Home />} />
+        <Route path='/book-detail/:id' element={<BookDetail />} />
+
+        <Route element={<AdminRoute />}>
           <Route path='/books' element={<Books />} />
           <Route path='/books/:id' element={<Book />} />
-          <Route index element={<Home />} />
+        </Route>
+
+        <Route element={<UserRoute />}>
           <Route path='/cart' element={<Cart />} />
         </Route>
-      </Routes>
-    </div>
+
+      </Route>
+
+    </Routes>
   );
 }
 

@@ -70,7 +70,7 @@ public class SecurityConfiguration {
 
 		http.authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				.requestMatchers("/api/auth/**").permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/books").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/books/**").permitAll()
 				.anyRequest().authenticated());
 
 		http.formLogin(login -> login.loginPage("http://localhost:3000/login"));

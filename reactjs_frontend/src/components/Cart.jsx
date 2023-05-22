@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Cart2(props) {
+function Cart(props) {
     return (
         <section class="h-100 h-custom">
             <div class="container h-100">
@@ -84,4 +84,4 @@ function Cart2(props) {
     );
 }
 
-export default Cart2;
+export default Cart;

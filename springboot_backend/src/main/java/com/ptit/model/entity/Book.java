@@ -30,7 +30,7 @@ public class Book {
 	@Column(columnDefinition = "nvarchar(255)")
 	private String category;
 
-	@Column(columnDefinition = "nvarchar(255)")
+	@Column(columnDefinition = "nvarchar(MAX)")
 	private String description;
 
 	private Date date;

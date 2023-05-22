@@ -1,27 +1,42 @@
 class AuthenticationService {
 
+    constructor() {
+        sessionStorage.setItem('token', null);
+        sessionStorage.setItem('authorities', null);
+        sessionStorage.setItem('account', null);
+    }
+
     getToken() {
         return sessionStorage.getItem('token');
     }
 
-    getAuthority() {
+    getRole() {
         const authorities = JSON.parse(sessionStorage.getItem('authorities'));
-        if (authorities.some(item => item.authority === 'ROLE_ADMIN'))
-            return 'ADMIN';
-        else
-            if (authorities.some(item => item.authority === 'ROLE_USER'))
-                return 'USER';
+        if (authorities != null) {
+            if (authorities.some(item => item.authority === 'ROLE_ADMIN'))
+                return 'ADMIN';
+            else
+                if (authorities.some(item => item.authority === 'ROLE_USER'))
+                    return 'USER';
+        }
         return 'GUEST';
     }
 
-    saveSession(data) {
-        sessionStorage.setItem("token", data.token);
-        sessionStorage.setItem("authorities", JSON.stringify(data.authorities));
+    getAccount() {
+        const account = JSON.parse(sessionStorage.getItem('account'));
+        return account;
     }
 
-    clearSession() {
+    saveCredentail(credentail, account) {
+        sessionStorage.setItem("token", credentail.token);
+        sessionStorage.setItem("authorities", JSON.stringify(credentail.authorities));
+        sessionStorage.setItem('account', JSON.stringify(account));
+    }
+
+    clearCredentail() {
         sessionStorage.setItem('token', null);
         sessionStorage.setItem('authorities', null);
+        sessionStorage.setItem('account', null);
     }
 }
 

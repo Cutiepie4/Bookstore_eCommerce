@@ -3,10 +3,9 @@ import { login } from "./api";
 import authService from "../service/AuthenticationService";
 
 let initialState = {
-    isLoggedIn: false,
-    loginMsg: '',
-    role: 'GUEST',
-    account: null
+    isLoggedIn: authService.getToken() === 'null' ? false : true,
+    role: authService.getRole(),
+    account: authService.getAccount()
 }
 
 const authSlice = createSlice({
@@ -14,23 +13,25 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         logout: (state) => {
+            authService.clearCredentail();
             state.isLoggedIn = false;
-            state.role = 'GUEST'
+            state.role = 'GUEST';
+            state.account = null;
         }
     },
     extraReducers: {
         [login.fulfilled]: (state, action) => {
             if (action.payload.response.status === 200) {
+                authService.saveCredentail(action.payload.response.data, action.payload.account);
                 state.isLoggedIn = true;
-                state.loginMsg = '';
-                state.role = authService.getAuthority();
-                state.account = action.payload.account;
-                authService.saveSession(action.payload.response.data);
+                state.role = authService.getRole();
+                state.account = authService.getAccount();
             }
             else {
                 state.account = null;
                 state.isLoggedIn = false;
-                state.loginMsg = 'Invalid account!';
+                state.role = 'GUEST';
+                authService.clearCredentail();
             }
         }
     }

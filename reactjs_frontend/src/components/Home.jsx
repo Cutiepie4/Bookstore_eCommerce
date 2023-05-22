@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/test.scss'
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBooks } from '../redux/api';
 
@@ -75,26 +75,28 @@ function Home(props) {
                             <div className="book-card">
                                 <div className="content-wrapper">
                                     <img className="book-card-img" src={require(`../assets/images/${book.imagePath}`)} alt="book-cover" />
-                                    <div className="card-content">
-                                        <div className="book-name">{book.title}</div>
-                                        <div className="book-by">by {book.author}</div>
-                                        <div className="rate">
-                                            <fieldset className="rating book-rate">
-                                                <input type="checkbox" id="star-c1" name="rating" value="5" />
-                                                <label className="full" for="star-c1"></label>
-                                                <input type="checkbox" id="star-c2" name="rating" value="4" />
-                                                <label className="full" for="star-c2"></label>
-                                                <input type="checkbox" id="star-c3" name="rating" value="3" />
-                                                <label className="full" for="star-c3"></label>
-                                                <input type="checkbox" id="star-c4" name="rating" value="2" />
-                                                <label className="full" for="star-c4"></label>
-                                                <input type="checkbox" id="star-c5" name="rating" value="1" />
-                                                <label className="full" for="star-c5"></label>
-                                            </fieldset>
-                                            <span className="book-voters card-vote">1.987 voters</span>
+                                    <NavLink to={`/book-detail/${book.id}`} style={{ textDecoration: 'none' }}>
+                                        <div className="card-content">
+                                            <div className="book-name">{book.title}</div>
+                                            <div className="book-by">by {book.author}</div>
+                                            <div className="rate">
+                                                <fieldset className="rating book-rate">
+                                                    <input type="checkbox" id="star-c1" name="rating" value="5" />
+                                                    <label className="full" for="star-c1"></label>
+                                                    <input type="checkbox" id="star-c2" name="rating" value="4" />
+                                                    <label className="full" for="star-c2"></label>
+                                                    <input type="checkbox" id="star-c3" name="rating" value="3" />
+                                                    <label className="full" for="star-c3"></label>
+                                                    <input type="checkbox" id="star-c4" name="rating" value="2" />
+                                                    <label className="full" for="star-c4"></label>
+                                                    <input type="checkbox" id="star-c5" name="rating" value="1" />
+                                                    <label className="full" for="star-c5"></label>
+                                                </fieldset>
+                                                <span className="book-voters card-vote">1.987 voters</span>
+                                            </div>
+                                            <div className="book-sum card-sum">{book.description}</div>
                                         </div>
-                                        <div className="book-sum card-sum">{book.description}</div>
-                                    </div>
+                                    </NavLink>
                                 </div>
                             </div>
                         )) : (<h3>Loading...</h3>)}

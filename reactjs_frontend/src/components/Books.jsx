@@ -21,7 +21,7 @@ function Books() {
         <div className="container">
             <h1>Book Storage</h1>
             <div>
-                {role === 'ADMIN' && <button className="btn btn-primary" style={{ marginRight: '5px' }} onClick={() => { navigate('/books/0', { state: { book: {} } }) }}>Add New Book</button>}
+                <button className="btn btn-primary" style={{ marginRight: '5px' }} onClick={() => { navigate('/books/0', { state: { book: {} } }) }}>Add New Book</button>
                 {/* <button className="btn btn-success" onClick={() => { dispatch(fetchBooks()) }}>Refresh</button> */}
             </div>
 
@@ -38,7 +38,7 @@ function Books() {
                         <th>Sold</th>
                         <th>Date</th>
                         <th>Price (vnd)</th>
-                        {role === 'ADMIN' && <th>Action</th>}
+                        <th>Action</th>
                     </tr>
                 </thead>
 
@@ -59,15 +59,14 @@ function Books() {
                             <td>{item.sold}</td>
                             <td>{item.date}</td>
                             <td>{item.price.toLocaleString()}</td>
-                            {role === 'ADMIN' && <td>
+                            <td>
                                 <button style={{ 'marginRight': '8px' }} className="btn btn-success" onClick={() => { navigate(`/books/${item.id}`) }}>Edit</button>
                                 <button className="btn btn-danger" onClick={() => { dispatch(deleteBook(item.id)) }}>Delete</button>
-                            </td>}
+                            </td>
                         </tr>
                     )) : <tr key="@"><td><h3>Loading...</h3></td></tr>}
                 </tbody>
             </table>
-
         </div >
     )
 };
