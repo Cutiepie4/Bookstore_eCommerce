@@ -30,10 +30,6 @@ function Book() {
         findBook();
     }, [id])
 
-    useEffect(() => {
-        console.log(book)
-    }, [book])
-
     const handleSubmit = (e) => {
         if (!isEditable) {
             e.preventDefault();

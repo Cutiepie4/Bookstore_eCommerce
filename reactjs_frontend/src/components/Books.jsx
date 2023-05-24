@@ -43,7 +43,7 @@ function Books() {
                 </thead>
 
                 <tbody>
-                    {!isLoading ? listBooks.map((item, index) => (
+                    {!isLoading && listBooks ? listBooks.map((item, index) => (
                         <tr key={item.id}>
                             <td>{item.id}</td>
                             <td>{item.title}</td>

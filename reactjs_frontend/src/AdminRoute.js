@@ -8,7 +8,7 @@ function AdminRoute() {
     const { isLoggedIn, role } = useSelector(state => state.authReducer);
 
     if (!isLoggedIn || role !== 'ADMIN') {
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/" replace />;
     }
 
     return <Outlet />;

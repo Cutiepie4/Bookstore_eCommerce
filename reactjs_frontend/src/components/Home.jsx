@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/test.scss'
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBooks } from '../redux/api';
 
@@ -72,7 +72,7 @@ function Home(props) {
                     </div>
                     <div className="book-cards">
                         {!isLoading ? listBooks.map(book => (
-                            <div className="book-card">
+                            <div className="book-card" >
                                 <div className="content-wrapper">
                                     <img className="book-card-img" src={require(`../assets/images/${book.imagePath}`)} alt="book-cover" />
                                     <NavLink to={`/book-detail/${book.id}`} style={{ textDecoration: 'none' }}>

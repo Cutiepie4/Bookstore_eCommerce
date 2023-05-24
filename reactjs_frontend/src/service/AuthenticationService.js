@@ -1,11 +1,5 @@
 class AuthenticationService {
 
-    constructor() {
-        sessionStorage.setItem('token', null);
-        sessionStorage.setItem('authorities', null);
-        sessionStorage.setItem('account', null);
-    }
-
     getToken() {
         return sessionStorage.getItem('token');
     }
@@ -34,9 +28,9 @@ class AuthenticationService {
     }
 
     clearCredentail() {
-        sessionStorage.setItem('token', null);
-        sessionStorage.setItem('authorities', null);
-        sessionStorage.setItem('account', null);
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('authorities');
+        sessionStorage.removeItem('account');
     }
 }
 
