@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { fetchBooks, addBook, updateBook, deleteBook } from "./api";
+import { fetchBooks, addBook, updateBook, deleteBook } from "./bookApi";
 
 const initialState = {
     listBooks: [],
-    isLoading: true,
-    isLoggedIn: false
+    isLoading: true
 }
 
 export const bookSlice = createSlice({

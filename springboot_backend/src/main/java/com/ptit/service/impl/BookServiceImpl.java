@@ -44,4 +44,10 @@ public class BookServiceImpl implements BookService {
 		if(bookDto.isPresent()) return modelMapper.map(bookDto.get(), BookDto.class);
 		return new BookDto();
 	}
+
+	@Override
+	public List<BookDto> findTop5BestSellers() {
+		return bookRepository.findTop5BestSellers().stream().map(book -> modelMapper.map(book, BookDto.class))
+				.collect(Collectors.toList());
+	}
 }

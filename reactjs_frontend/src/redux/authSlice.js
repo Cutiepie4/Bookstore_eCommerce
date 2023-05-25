@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login } from "./api";
+import { login } from "./loginApi";
 import authService from "../service/AuthenticationService";
 import { toast } from "react-toastify";
 
@@ -14,12 +14,12 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         logout: (state) => {
-            toast.success('You are logged out.');
+            setTimeout(() => { toast.success('You are logged out.') }, 2000);
             authService.clearCredentail();
             state.isLoggedIn = false;
             state.role = 'GUEST';
             state.account = null;
-        }
+        },
     },
     extraReducers: {
         [login.fulfilled]: (state, action) => {
@@ -39,5 +39,5 @@ const authSlice = createSlice({
     }
 })
 
-export const { logout } = authSlice.actions;
+export const { logout, test } = authSlice.actions;
 export default authSlice.reducer

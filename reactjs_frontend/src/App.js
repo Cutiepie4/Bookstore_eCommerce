@@ -1,6 +1,5 @@
 import Book from './components/Book';
 import Books from './components/Books';
-import './styles/App.scss';
 import { Route, Routes } from 'react-router-dom';
 import Login from './components/Login';
 import Nav from './components/Nav';
@@ -10,7 +9,6 @@ import AdminRoute from './AdminRoute';
 import UserRoute from './UserRoute';
 import BookDetail from './components/BookDetail';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (

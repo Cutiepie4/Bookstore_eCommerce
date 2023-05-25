@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/authSlice';
-import authService from '../service/AuthenticationService';
 
 function Nav() {
 
@@ -24,12 +23,12 @@ function Nav() {
                     <div className='notification-icon'>1</div>
                     <NavLink style={{ textDecoration: 'none', color: '#8b939c' }} to={'/cart'}>
                         <div className="user-profile pe-3">
-                            <i class="fa-solid fa-cart-shopping fa-lg pe-2"></i>
+                            <i className="fa-solid fa-cart-shopping fa-lg pe-2"></i>
                             Cart
                         </div>
                     </NavLink>
                     <div className="profile-menu">
-                        <i class="fa-solid fa-user fa-lg p-2"></i>
+                        <i className="fa-solid fa-user fa-lg p-2"></i>
                         {account ? account.username : 'Login'}
                         <ul className="dropdown">
                             {isLoggedIn ? (<li className='border-bottom'><NavLink>Manage user</NavLink></li>) : (<li><NavLink to="/login">Login</NavLink></li>)}

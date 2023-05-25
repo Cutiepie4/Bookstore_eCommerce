@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import backgroundImage from '../assets/images/background.jpg'
-import '../styles/login.scss';
-import { login } from '../redux/api';
+import { login } from '../redux/loginApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom'
 
@@ -21,7 +20,7 @@ function Login() {
 
     const dispatch = useDispatch()
 
-    const styles = {
+    const myStyle = {
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -46,7 +45,7 @@ function Login() {
     }, [isLoggedIn]);
 
     return (
-        <div style={styles}>
+        <div style={myStyle}>
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-md-6 text-center mb-5">
@@ -56,26 +55,26 @@ function Login() {
                         <h3 className='text-center' style={{ color: 'red' }}>{loginMsg}</h3>
                     </div>
                 </div>
-                <div className="row justify-content-center">
-                    <div className="col-md-6 col-lg-4">
-                        <div className="login-wrap p-0">
-                            <h3 className="mb-2 text-center" style={{ fontSize: '20px', color: 'white' }}>Already have an account?</h3>
-                            <div>
-                                <div className="form-group">
+                <div className="row justify-content-center form-group">
+                    <div className="col-md-6 col-lg-4 form-group">
+                        <div className="login-wrap p-0 form-group">
+                            <h3 className="mb-2 text-center form-group pb-3" style={{ fontSize: '20px', color: 'white' }}>Already have an account?</h3>
+                            <div className='form-group'>
+                                <div className='pb-2'>
                                     <input value={username} onChange={(e) => { setUsername(e.target.value) }} type="text" className="form-control" placeholder="Username" required disabled={!isEditable} />
                                 </div>
-                                <div className="form-group">
+                                <div className='pb-2'>
                                     <input value={password} onChange={(e) => { setPassword(e.target.value) }} type="password" className="form-control" placeholder="Password" required disabled={!isEditable} />
                                 </div>
-                                <div className="form-group">
+                                <div className='pb-2'>
                                     <button onClick={handleLogin} className="form-control btn btn-primary submit">Sign In</button>
                                 </div>
                                 <div className="d-flex justify-content-between">
-                                    <div class="form-check">
-                                        <label class="form-check-label" for="flexCheckDefault" style={{ color: 'white' }}>
+                                    <div className="form-check">
+                                        <label className="form-check-label" htmlFor="flexCheckDefault" style={{ color: 'white' }}>
                                             Remember me
                                         </label>
-                                        <input class="form-check-input" type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} disabled={!isEditable} id="flexCheckDefault" />
+                                        <input className="form-check-input" type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} disabled={!isEditable} />
                                     </div>
                                     <div disabled={!isEditable}><NavLink to="/register" style={{ color: "#fff", textDecoration: 'none' }} >Register</NavLink></div>
                                 </div>
@@ -84,7 +83,7 @@ function Login() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 

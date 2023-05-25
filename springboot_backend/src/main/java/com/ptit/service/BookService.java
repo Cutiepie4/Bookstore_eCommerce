@@ -15,4 +15,6 @@ public interface BookService {
 	void save(BookDto book);
 	
 	void deleteById(Long id);
+	
+	List<BookDto> findTop5BestSellers();
 }

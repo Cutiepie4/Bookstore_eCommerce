@@ -2,7 +2,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-
 const api = axios.create({
     baseURL: 'http://localhost:8080/api'
 })
@@ -17,16 +16,8 @@ const createConfig = () => {
     }
 }
 
-export default api;
-
-export const login = createAsyncThunk('authReducers/login', async (account) => {
-    return api.post('/auth/login', account)
-        .then(response => { toast.success(`Welcome ${account.username.toUpperCase()} to bookstore`); return { response, account } })
-        .catch(error => toast.error(error.message));
-})
-
 export const fetchBooks = createAsyncThunk('bookReducers/fetchBooks', async () => {
-    const res = await api.get('/books', createConfig()).catch(error => toast.error(error.message));
+    const res = await api.get('/books').catch(error => toast.error(error.message));
     return res.data;
 })
 
@@ -47,5 +38,10 @@ export const deleteBook = createAsyncThunk('bookReducers/deleteBook', async (id)
 
 export const findBookById = async (id) => {
     const res = await api.get(`/books/${id}`, createConfig()).catch(error => toast.error(error.message));
+    return res.data;
+}
+
+export const findTop5BestSellers = async () => {
+    const res = await api.get('/books/best-sellers').catch(error => toast.error(error.message));
     return res.data;
 }

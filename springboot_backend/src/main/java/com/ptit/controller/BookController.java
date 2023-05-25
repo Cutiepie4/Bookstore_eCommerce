@@ -116,4 +116,9 @@ public class BookController {
 		bookService.deleteById(Long.valueOf(id));
 		return bookService.findAll();
 	}
+	
+	@GetMapping("/books/best-sellers")
+	public List<BookDto> findTop5BestSellers() {
+		return bookService.findTop5BestSellers();
+	}
 }

@@ -6,20 +6,14 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "cart")
-public class Cart {
+@Entity
+public class UserRole {
 	
 	@EmbeddedId
-	private CartKey id;
+	UserRoleKey id;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@MapsId("username")
@@ -27,9 +21,7 @@ public class Cart {
 	private User user;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@MapsId("book_id")
-	@JoinColumn(name = "book_id")
-	private Book book;
-	
-	private int quantity;
+	@MapsId("role")
+	@JoinColumn(name = "role")
+	private Role role;
 }

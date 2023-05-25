@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import '../styles/test.scss'
+import React, { useEffect } from 'react';
+import '../styles/custom.scss'
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchBooks } from '../redux/api';
+import { fetchBooks, findTop5BestSellers } from '../redux/bookApi';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 function Home(props) {
 
@@ -10,8 +12,15 @@ function Home(props) {
 
     const { isLoading, listBooks } = useSelector(state => state.bookReducer);
 
+    const [listBestSellers, setListBestSellers] = useState([]);
+
     useEffect(() => {
         dispatch(fetchBooks());
+        const fetchBestSeller = async () => {
+            const res = await findTop5BestSellers();
+            setListBestSellers(res);
+        }
+        fetchBestSeller();
     }, [])
 
     return (
@@ -19,42 +28,18 @@ function Home(props) {
             <div className="main-wrapper">
                 <div className="books-of">
                     <div className="week year">
-                        <div className="author-title">Best Sellers</div>
-                        <div className="year-book">
-                            <img src="https://images-na.ssl-images-amazon.com/images/I/A1kNdYXw0GL.jpg" alt="" className="year-book-img" />
-                            <div className="year-book-content">
-                                <div className="year-book-name">Disappearing Earth</div>
-                                <div className="year-book-author">by Julia Phillips</div>
+                        <div className="author-title fs-5 mt-3">Best Sellers</div>
+                        {listBestSellers && listBestSellers.map(book => (
+                            <div className="year-book">
+                                <img src={require(`../assets/images/${book.imagePath}`)} alt="book-cover" className="year-book-img" />
+                                <div className="year-book-content">
+                                    <NavLink style={{ textDecoration: 'none', color: 'black' }} to={`/book-detail/${book.id}`}>
+                                        <div className="year-book-name ">{book.title}</div>
+                                    </NavLink>
+                                    <div className="year-book-author">by {book.author}</div>
+                                </div>
                             </div>
-                        </div>
-                        <div className="year-book">
-                            <img src="https://images-na.ssl-images-amazon.com/images/I/81eI0ExR+VL.jpg" alt="" className="year-book-img" />
-                            <div className="year-book-content">
-                                <div className="year-book-name">Lost Children Archive</div>
-                                <div className="year-book-author">by Valeria Luiselli</div>
-                            </div>
-                        </div>
-                        <div className="year-book">
-                            <img src="https://images-na.ssl-images-amazon.com/images/I/81OF9eJDA4L.jpg" alt="" className="year-book-img" />
-                            <div className="year-book-content">
-                                <div className="year-book-name">Phantoms: A Thriller </div>
-                                <div className="year-book-author">by Dean Koontz</div>
-                            </div>
-                        </div>
-                        <div className="year-book">
-                            <img src="https://m.media-amazon.com/images/I/515FWPyZ-5L.jpg" alt="" className="year-book-img" />
-                            <div className="year-book-content">
-                                <div className="year-book-name">Midnight in Chernobyl</div>
-                                <div className="year-book-author">by Adam Higginbotham</div>
-                            </div>
-                        </div>
-                        <div className="year-book">
-                            <img src="https://images-na.ssl-images-amazon.com/images/I/91dBtgERNUL.jpg" alt="" className="year-book-img" />
-                            <div className="year-book-content">
-                                <div className="year-book-name">10 Minutes 38 Seconds</div>
-                                <div className="year-book-author">by Elif Shafak</div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                     <div className="overlay"></div>
                 </div>
@@ -72,7 +57,7 @@ function Home(props) {
                     </div>
                     <div className="book-cards">
                         {!isLoading ? listBooks.map(book => (
-                            <div className="book-card" >
+                            <div key={book.id} className="book-card" >
                                 <div className="content-wrapper">
                                     <img className="book-card-img" src={require(`../assets/images/${book.imagePath}`)} alt="book-cover" />
                                     <NavLink to={`/book-detail/${book.id}`} style={{ textDecoration: 'none' }}>
@@ -82,15 +67,15 @@ function Home(props) {
                                             <div className="rate">
                                                 <fieldset className="rating book-rate">
                                                     <input type="checkbox" id="star-c1" name="rating" value="5" />
-                                                    <label className="full" for="star-c1"></label>
+                                                    <label className="full" htmlFor="star-c1"></label>
                                                     <input type="checkbox" id="star-c2" name="rating" value="4" />
-                                                    <label className="full" for="star-c2"></label>
+                                                    <label className="full" htmlFor="star-c2"></label>
                                                     <input type="checkbox" id="star-c3" name="rating" value="3" />
-                                                    <label className="full" for="star-c3"></label>
+                                                    <label className="full" htmlFor="star-c3"></label>
                                                     <input type="checkbox" id="star-c4" name="rating" value="2" />
-                                                    <label className="full" for="star-c4"></label>
+                                                    <label className="full" htmlFor="star-c4"></label>
                                                     <input type="checkbox" id="star-c5" name="rating" value="1" />
-                                                    <label className="full" for="star-c5"></label>
+                                                    <label className="full" htmlFor="star-c5"></label>
                                                 </fieldset>
                                                 <span className="book-voters card-vote">1.987 voters</span>
                                             </div>
@@ -102,7 +87,7 @@ function Home(props) {
                         )) : (<h3>Loading...</h3>)}
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     );
 }

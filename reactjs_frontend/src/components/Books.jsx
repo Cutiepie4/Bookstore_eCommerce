@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { deleteBook, fetchBooks } from '../redux/api';
+import { deleteBook, fetchBooks } from '../redux/bookApi';
 
 function Books() {
 
@@ -20,7 +20,7 @@ function Books() {
     return (
         <div className="container">
             <h1>Book Storage</h1>
-            <div>
+            <div className='pt-2'>
                 <button className="btn btn-primary" style={{ marginRight: '5px' }} onClick={() => { navigate('/books/0', { state: { book: {} } }) }}>Add New Book</button>
                 {/* <button className="btn btn-success" onClick={() => { dispatch(fetchBooks()) }}>Refresh</button> */}
             </div>
