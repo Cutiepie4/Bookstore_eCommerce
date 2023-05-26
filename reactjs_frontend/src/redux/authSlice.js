@@ -14,7 +14,6 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         logout: (state) => {
-            setTimeout(() => { toast.success('You are logged out.') }, 2000);
             authService.clearCredentail();
             state.isLoggedIn = false;
             state.role = 'GUEST';

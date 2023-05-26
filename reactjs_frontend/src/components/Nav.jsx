@@ -20,7 +20,7 @@ function Nav() {
                 </div>
 
                 <div className="profile">
-                    <div className='notification-icon'>1</div>
+                    {/* <div className='notification-icon'>1</div> */}
                     <NavLink style={{ textDecoration: 'none', color: '#8b939c' }} to={'/cart'}>
                         <div className="user-profile pe-3">
                             <i className="fa-solid fa-cart-shopping fa-lg pe-2"></i>

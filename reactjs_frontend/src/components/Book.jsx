@@ -20,12 +20,8 @@ function Book() {
 
     useEffect(() => {
         const findBook = async () => {
-            try {
-                const bookData = await findBookById(id);
-                setBook(bookData);
-            } catch (error) {
-                console.log(error);
-            }
+            const bookData = await findBookById(id);
+            setBook(bookData);
         };
         findBook();
     }, [id])
