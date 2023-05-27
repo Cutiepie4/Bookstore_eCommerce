@@ -14,23 +14,11 @@ function Login() {
 
     const [rememberMe, setRememberMe] = useState(false);
 
-    const { isLoggedIn, loginMsg } = useSelector(state => state.authReducer);
+    const { isLoggedIn } = useSelector(state => state.authReducer);
 
     const [isEditable, setIsEditable] = useState(!isLoggedIn);
 
     const dispatch = useDispatch()
-
-    const myStyle = {
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        height: '100vh',
-        width: '100vw',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        zIndex: -1,
-    };
 
     const handleLogin = () => {
         if (!isLoggedIn)
@@ -45,45 +33,53 @@ function Login() {
     }, [isLoggedIn]);
 
     return (
-        <div style={myStyle}>
-            <div className="container">
-                <div className="row justify-content-center">
-                    <div className="col-md-6 text-center mb-5">
-                        <h2 className="heading-section pt-5" style={{ color: 'red' }}>BOOK LIBRARY</h2>
-                    </div>
-                    <div>
-                        <h3 className='text-center' style={{ color: 'red' }}>{loginMsg}</h3>
-                    </div>
-                </div>
-                <div className="row justify-content-center form-group">
-                    <div className="col-md-6 col-lg-4 form-group">
-                        <div className="login-wrap p-0 form-group">
-                            <h3 className="mb-2 text-center form-group pb-3" style={{ fontSize: '20px', color: 'white' }}>Already have an account?</h3>
-                            <div className='form-group'>
-                                <div className='pb-2'>
-                                    <input value={username} onChange={(e) => { setUsername(e.target.value) }} type="text" className="form-control" placeholder="Username" required disabled={!isEditable} />
-                                </div>
-                                <div className='pb-2'>
-                                    <input value={password} onChange={(e) => { setPassword(e.target.value) }} type="password" className="form-control" placeholder="Password" required disabled={!isEditable} />
-                                </div>
-                                <div className='pb-2'>
-                                    <button onClick={handleLogin} className="form-control btn btn-primary submit">Sign In</button>
-                                </div>
-                                <div className="d-flex justify-content-between">
-                                    <div className="form-check">
-                                        <label className="form-check-label" htmlFor="flexCheckDefault" style={{ color: 'white' }}>
-                                            Remember me
-                                        </label>
-                                        <input className="form-check-input" type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} disabled={!isEditable} />
+        <section className="vh-100" style={{ backgroundColor: "#eee" }}>
+            <div className="container h-100">
+                <div className="row d-flex py-5 h-100">
+                    <div className="col-lg-12 col-xl-11">
+                        <div className="card text-black" style={{ borderRadius: '25px' }}>
+                            <div className="card-body p-md-5">
+                                <div className="row justify-content-center">
+                                    <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                                        <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Login to BookStore</p>
+                                        <form className="mx-1 mx-md-4">
+                                            <div className="d-flex flex-row align-items-center mb-4">
+                                                <i className="fas fa-user fa-lg me-3 fa-fw"></i>
+                                                <div className="form-outline flex-fill mb-0">
+                                                    <input type="text" id="form3Example1c" className="form-control" placeholder='Your Username' value={username} onChange={e => setUsername(e.target.value)} />
+                                                </div>
+                                            </div>
+
+                                            <div className="d-flex flex-row align-items-center mb-4">
+                                                <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
+                                                <div className="form-outline flex-fill mb-0">
+                                                    <input type="password" id="form3Example4c" className="form-control" placeholder='Password' value={password} onChange={e => setPassword(e.target.value)} />
+                                                </div>
+                                            </div>
+
+                                            <div className="d-flex justify-content-between mb-5 align-items-center">
+                                                <div className='d-flex justify-content-between form-check'>
+                                                    <input className="form-check-input mx-2" type="checkbox" value="" id="form2Example3c" checked={rememberMe} onChange={e => setRememberMe(e.target.checked)} />
+                                                    <label className="form-check-label" htmlFor="form2Example3c">
+                                                        Remember me
+                                                    </label>
+                                                </div>
+
+                                                <NavLink className='btn btn-outline-dark' to={'/register'}>Register</NavLink>
+                                            </div>
+
+                                            <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                                                <button type="button" className="btn btn-primary btn-lg" onClick={handleLogin} disabled={!isEditable}>Login</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div disabled={!isEditable}><NavLink to="/register" style={{ color: "#fff", textDecoration: 'none' }} >Register</NavLink></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div >
+        </section>
     );
 }
 

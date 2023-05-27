@@ -16,21 +16,20 @@ class AuthenticationService {
         return 'GUEST';
     }
 
-    getAccount() {
-        const account = JSON.parse(sessionStorage.getItem('account'));
-        return account;
+    getUsername() {
+        return sessionStorage.getItem('username');
     }
 
     saveCredentail(credentail, account) {
         sessionStorage.setItem("token", credentail.token);
         sessionStorage.setItem("authorities", JSON.stringify(credentail.authorities));
-        sessionStorage.setItem('account', JSON.stringify(account));
+        sessionStorage.setItem('username', account.username);
     }
 
     clearCredentail() {
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('authorities');
-        sessionStorage.removeItem('account');
+        sessionStorage.removeItem('username');
     }
 }
 

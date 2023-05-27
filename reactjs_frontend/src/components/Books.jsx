@@ -11,18 +11,15 @@ function Books() {
 
     const { isLoading, listBooks } = useSelector(state => state.bookReducer);
 
-    const { isLoggedIn, role } = useSelector(state => state.authReducer);
-
     useEffect(() => {
         dispatch(fetchBooks());
     }, []);
 
     return (
-        <div className="container">
+        <div className='px-5'>
             <h1>Book Storage</h1>
             <div className='pt-2'>
                 <button className="btn btn-primary" style={{ marginRight: '5px' }} onClick={() => { navigate('/books/0', { state: { book: {} } }) }}>Add New Book</button>
-                {/* <button className="btn btn-success" onClick={() => { dispatch(fetchBooks()) }}>Refresh</button> */}
             </div>
 
             <br />

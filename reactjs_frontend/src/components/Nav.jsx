@@ -5,7 +5,7 @@ import { logout } from '../redux/authSlice';
 
 function Nav() {
 
-    const { isLoggedIn, role, account } = useSelector(state => state.authReducer);
+    const { isLoggedIn, role, username } = useSelector(state => state.authReducer);
 
     const dispatch = useDispatch();
 
@@ -29,7 +29,7 @@ function Nav() {
                     </NavLink>
                     <div className="profile-menu">
                         <i className="fa-solid fa-user fa-lg p-2"></i>
-                        {account ? account.username : 'Login'}
+                        {username ? username : 'Login'}
                         <ul className="dropdown">
                             {isLoggedIn ? (<li className='border-bottom'><NavLink>Manage user</NavLink></li>) : (<li><NavLink to="/login">Login</NavLink></li>)}
                             {role == 'ADMIN' && (<li className='border-bottom'><NavLink to='/books'>Manage storage</NavLink></li>)}

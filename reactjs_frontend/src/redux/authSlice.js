@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 let initialState = {
     isLoggedIn: authService.getToken() === null ? false : true,
     role: authService.getRole(),
-    account: authService.getAccount()
+    username: authService.getUsername()
 }
 
 const authSlice = createSlice({
@@ -17,7 +17,7 @@ const authSlice = createSlice({
             authService.clearCredentail();
             state.isLoggedIn = false;
             state.role = 'GUEST';
-            state.account = null;
+            state.username = null;
         },
     },
     extraReducers: {
@@ -26,10 +26,10 @@ const authSlice = createSlice({
                 authService.saveCredentail(action.payload.response.data, action.payload.account);
                 state.isLoggedIn = true;
                 state.role = authService.getRole();
-                state.account = authService.getAccount();
+                state.username = authService.getUsername();
             }
             else {
-                state.account = null;
+                state.username = null;
                 state.isLoggedIn = false;
                 state.role = 'GUEST';
                 authService.clearCredentail();

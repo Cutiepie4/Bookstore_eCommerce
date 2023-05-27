@@ -7,14 +7,14 @@ import { NavLink } from 'react-router-dom';
 
 function Cart(props) {
 
-    const { account } = useSelector(state => state.authReducer);
+    const { username } = useSelector(state => state.authReducer);
 
     const dispatch = useDispatch();
 
     const { listCarts } = useSelector(state => state.cartReducer);
 
     useEffect(() => {
-        dispatch(getCarts(account.username));
+        dispatch(getCarts(username));
     }, [])
 
     return (
@@ -55,7 +55,7 @@ function Cart(props) {
                                             </td>
                                             <td className="align-middle">
                                                 <div className="d-flex justify-content-center align-items-center" style={{ height: '100%' }}>
-                                                    <div onClick={() => dispatch(deleteCart({ username: account.username, cart }))} className="text-center" style={{ width: '100%' }}>
+                                                    <div onClick={() => dispatch(deleteCart({ username, cart }))} className="text-center" style={{ width: '100%' }}>
                                                         <i class="fa-regular fa-trash-can fa-lg trash-can-icon"></i>
                                                     </div>
                                                 </div>

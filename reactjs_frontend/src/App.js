@@ -9,6 +9,7 @@ import AdminRoute from './AdminRoute';
 import UserRoute from './UserRoute';
 import BookDetail from './components/BookDetail';
 import { ToastContainer } from 'react-toastify';
+import Register from './components/Register';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path='/book-detail' element={<BookDetail />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
 
         <Route path='/' element={<Nav />} >
           <Route index element={<Home />} />

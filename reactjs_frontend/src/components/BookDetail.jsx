@@ -2,14 +2,13 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { findBookById } from '../redux/bookApi';
-import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { addCart } from '../redux/cartApi';
 import { deleteComment, fetchComments, postComment } from '../redux/commentApi';
 
 function BookDetail(props) {
 
-    const { account, isLoggedIn, role } = useSelector(state => state.authReducer);
+    const { username, isLoggedIn, role } = useSelector(state => state.authReducer);
 
     const dispatch = useDispatch();
 
@@ -53,7 +52,7 @@ function BookDetail(props) {
     }, [])
 
     const handlePost = async () => {
-        const newComment = await postComment(account.username, cart.book.id, currentComment);
+        const newComment = await postComment(username, cart.book.id, currentComment);
         setListCommments([...listComments, newComment]);
         setCurrentComment('');
     }
@@ -86,7 +85,7 @@ function BookDetail(props) {
                                 <i className="fa-solid fa-plus cart-quantity" onClick={() => { setCart({ ...cart, quantity: cart.quantity + 1 }) }}></i>
                             </div>
                             <div className='d-flex'>
-                                <button className="btn btn-outline-dark flex-shrink-0" type="button" onClick={() => { isLoggedIn ? dispatch(addCart({ cart, username: account.username })) : navigate('/login') }}>
+                                <button className="btn btn-outline-dark flex-shrink-0" type="button" onClick={() => { isLoggedIn ? dispatch(addCart({ cart, username })) : navigate('/login') }}>
                                     <i className="bi-cart-fill me-1"></i>
                                     Add to cart
                                 </button>
@@ -118,7 +117,7 @@ function BookDetail(props) {
                                                         <p className="mb-0">
                                                             {formatDate(comment.date)}
                                                         </p>
-                                                        {isLoggedIn && (role === 'ADMIN' || account.username === comment.user.username) && <div className="link-muted" onClick={() => handleDelete(comment.id)}>
+                                                        {isLoggedIn && (role === 'ADMIN' || username === comment.user.username) && <div className="link-muted" onClick={() => handleDelete(comment.id)}>
                                                             <i className="fa-solid fa-trash fa-sm cart-quantity ms-2"></i>
                                                         </div>}
                                                     </div>
