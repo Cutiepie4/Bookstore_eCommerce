@@ -54,8 +54,8 @@ public class BookController {
 
 	private String saveImage(MultipartFile image) throws IOException {
 		// Define the directory to save the image
-		String saveDirectory = "C:\\Users\\trvie\\Documents\\Code\\Library_web_fullstack\\reactjs_frontend\\src\\assets\\images";
-//		String saveDirectory = "C:\\Users\\trvie\\Documents\\Bookstore_web_fullstack\\Library_web_fullstack\\reactjs_frontend\\src\\assets\\images";
+//		String saveDirectory = "C:\\Users\\trvie\\Documents\\Code\\Library_web_fullstack\\reactjs_frontend\\src\\assets\\images";
+		String saveDirectory = "C:\\Users\\trvie\\Documents\\Library_web_fullstack\\reactjs_frontend\\src\\assets\\images";
 
 		// Generate a unique file name for the image
 		String fileName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();

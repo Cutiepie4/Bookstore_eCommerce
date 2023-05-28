@@ -13,7 +13,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 @Service
 public class JwtService {
 	private final String SECRET_KEY = "123";
-	private final int EXPIRED_TIME = 60 * 60 * 1000;
+	private final int EXPIRED_TIME = 6 * 60 * 60 * 1000;
 
 	public String generateToken(String username, Collection<? extends GrantedAuthority> authorities) {
 		Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY.getBytes());

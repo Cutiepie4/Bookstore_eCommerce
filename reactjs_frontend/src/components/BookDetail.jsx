@@ -5,6 +5,8 @@ import { findBookById } from '../redux/bookApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { addCart } from '../redux/cartApi';
 import { deleteComment, fetchComments, postComment } from '../redux/commentApi';
+import Rating from 'react-rating';
+import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
 
 function BookDetail(props) {
 
@@ -112,9 +114,9 @@ function BookDetail(props) {
                                                     src={require(`../assets/images/avt.webp`)} alt="avatar" width="60"
                                                     height="60" />
                                                 <div>
-                                                    <h6 className="fw-bold mb-1">{comment.user.username}</h6>
+                                                    <h6 className="fw-bold mb-1" style={{ color: 'red' }}>{comment.user.username}</h6>
                                                     <div className="d-flex align-items-center mb-3">
-                                                        <p className="mb-0">
+                                                        <p className="mb-0 text-muted">
                                                             {formatDate(comment.date)}
                                                         </p>
                                                         {isLoggedIn && (role === 'ADMIN' || username === comment.user.username) && <div className="link-muted" onClick={() => handleDelete(comment.id)}>
@@ -146,20 +148,14 @@ function BookDetail(props) {
                                             {isLoggedIn ? (<>
                                                 <h5>You can post your comment here</h5>
                                                 <div className="align-items-center justify-content-center">
-                                                    Rating here
-                                                    <fieldset className="ms-2 rating book-rate" >
-                                                        <input type="checkbox" id="star-c1" name="rating" value="5" />
-                                                        <label className="full" htmlFor="star-c1"></label>
-                                                        <input type="checkbox" id="star-c2" name="rating" value="4" />
-                                                        <label className="full" htmlFor="star-c2"></label>
-                                                        <input type="checkbox" id="star-c3" name="rating" value="3" />
-                                                        <label className="full" htmlFor="star-c3"></label>
-                                                        <input type="checkbox" id="star-c4" name="rating" value="2" />
-                                                        <label className="full" htmlFor="star-c4"></label>
-                                                        <input type="checkbox" id="star-c5" name="rating" value="1" />
-                                                        <label className="full" htmlFor="star-c5"></label>
-                                                    </fieldset>
+                                                    <p className='mb-2'>Rating here</p>
+                                                    <Rating
+                                                        emptySymbol={<FaRegStar className="star-empty me-2" />}
+                                                        fullSymbol={<FaStar className="star-full" />
+                                                        }
+                                                    />
                                                     <span className="book-voters card-vote"></span>
+                                                    <button className='btn btn-primary btn-sm'>Vote</button>
                                                 </div>
                                                 <div className="form-outline">
                                                     <label className="form-label my-3" htmlFor="textAreaExample">What is your opinion?</label>

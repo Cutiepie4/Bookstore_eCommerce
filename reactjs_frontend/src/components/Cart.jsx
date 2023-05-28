@@ -56,7 +56,7 @@ function Cart(props) {
                                             <td className="align-middle">
                                                 <div className="d-flex justify-content-center align-items-center" style={{ height: '100%' }}>
                                                     <div onClick={() => dispatch(deleteCart({ username, cart }))} className="text-center" style={{ width: '100%' }}>
-                                                        <i class="fa-regular fa-trash-can fa-lg trash-can-icon"></i>
+                                                        <i className="fa-regular fa-trash-can fa-lg trash-can-icon"></i>
                                                     </div>
                                                 </div>
                                             </td>
