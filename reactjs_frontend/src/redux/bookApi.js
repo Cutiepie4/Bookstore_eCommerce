@@ -22,17 +22,17 @@ export const fetchBooks = createAsyncThunk('bookReducers/fetchBooks', async () =
 })
 
 export const addBook = createAsyncThunk('bookReducers/addBook', async (formData) => {
-    const res = await api.post('/books/new', formData, createConfig()).then(() => toast.success('Add book succesfully!')).catch(error => toast.error(error.message));
+    const res = await api.post('/books/new', formData, createConfig()).then(res => { toast.success('Add book succesfully!'); return res }).catch(error => toast.error(error.message));
     return res.data;
 })
 
 export const updateBook = createAsyncThunk('bookReducers/updateBook', async (formData) => {
-    const res = await api.put('/books/update', formData, createConfig()).then(() => toast.success('Update book succesfully!')).catch(error => toast.error(error.message));
+    const res = await api.put('/books/update', formData, createConfig()).then(res => { toast.success('Update book succesfully!'); return res }).catch(error => toast.error(error.message));
     return res.data;
 })
 
 export const deleteBook = createAsyncThunk('bookReducers/deleteBook', async (id) => {
-    const res = await api.delete(`/books/${id}`, createConfig()).toast.success('Delete book successfully').catch(error => toast.error(error.message));
+    const res = await api.delete(`/books/${id}`, createConfig()).then(res => { toast.success('Delete book successfully'); return res }).catch(error => toast.error(error.message));
     return res.data;
 })
 

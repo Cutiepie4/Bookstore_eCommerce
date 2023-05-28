@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { register } from '../redux/loginApi';
+import { NavLink } from 'react-router-dom';
 
 function Register(props) {
 
@@ -74,7 +75,10 @@ function Register(props) {
                                                 </label>
                                             </div>
                                             <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                                <button type="button" className="btn btn-primary btn-lg" onClick={handleRegister}>Register</button>
+                                                <button type="button" className="btn btn-success me-4" onClick={handleRegister}>Register</button>
+                                                <NavLink to={'/login'}>
+                                                    <button className="btn btn-outline-dark">Return to login page</button>
+                                                </NavLink>
                                             </div>
                                         </form>
                                     </div>

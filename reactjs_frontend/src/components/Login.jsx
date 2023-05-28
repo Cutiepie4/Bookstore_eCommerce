@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import backgroundImage from '../assets/images/background.jpg'
 import { login } from '../redux/loginApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom'
@@ -69,7 +68,7 @@ function Login() {
                                             </div>
 
                                             <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                                <button type="button" className="btn btn-primary btn-lg" onClick={handleLogin} disabled={!isEditable}>Login</button>
+                                                <button type="button" className="btn btn-primary" onClick={handleLogin} disabled={!isEditable}>Login</button>
                                             </div>
                                         </form>
                                     </div>

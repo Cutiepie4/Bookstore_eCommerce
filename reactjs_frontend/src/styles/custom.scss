@@ -848,8 +848,8 @@ h1 {
 .profile-menu .dropdown {
     position: absolute;
     min-width: 120px;
-    top: 110%;
-    left: 0;
+    top: 100%;
+    transform: translateX(-20%);
     display: none;
     list-style-type: none;
     margin: 0;
