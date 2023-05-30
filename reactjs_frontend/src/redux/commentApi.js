@@ -1,27 +1,18 @@
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"
+import { createConfig } from "./cartApi";
 
 const api = axios.create({
     baseURL: 'http://localhost:8080/api'
 })
-
-const createConfig = () => {
-    const token = sessionStorage.getItem('token');
-    return {
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-        }
-    }
-}
 
 export const fetchComments = async (bookId) => {
     const res = await api.get(`/comments/${bookId}`, createConfig()).catch(error => toast.error(error.message));
     return res.data
 }
 
-export const postComment = async (username, bookId, comment) => {
-    return await api.post(`/comments/${bookId}/${username}`, comment, createConfig())
+export const postComment = async (payload) => {
+    return await api.post(`/comments/${payload.bookId}/${payload.username}`, { comment: payload.comment }, createConfig())
         .then(res => { toast.success('Posted your comment.'); return res.data })
         .catch(error => toast.error(error.message));
 }

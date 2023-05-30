@@ -7,7 +7,7 @@ function UserRoute(props) {
 
     const { isLoggedIn, role } = useSelector(state => state.authReducer);
 
-    if (!isLoggedIn || role !== 'USER') {
+    if (!isLoggedIn || role == 'GUEST') {
         return <Navigate to="/login" replace />;
     }
 

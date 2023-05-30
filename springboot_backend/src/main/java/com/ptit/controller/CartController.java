@@ -30,13 +30,8 @@ public class CartController {
 	}
 	
 	@PostMapping("/carts/{username}")
-	public void addCart(@PathVariable("username") String username, @RequestBody CartDto newCart) {
-		cartService.save(username, newCart);
-	}
-	
-	@PutMapping("/carts/{username}")
-	public void updateCart(@PathVariable("username") String username, @RequestBody CartDto newCart) {
-		cartService.save(username, newCart);
+	public CartDto addCart(@PathVariable("username") String username, @RequestBody CartDto newCart) {
+		return cartService.save(username, newCart);
 	}
 	
 	@DeleteMapping("/carts/{username}")
@@ -45,5 +40,10 @@ public class CartController {
 			cartService.deleteByCartKey(username, newCart);
 		}
 		else cartService.deleteByUsername(username);
+	}
+	
+	@GetMapping("/carts/{username}/count")
+	public Integer countCarts(@PathVariable("username") String username) {
+		return cartService.findAllByUsername(username).size();
 	}
 }

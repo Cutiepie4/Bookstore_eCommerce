@@ -24,7 +24,9 @@ public class BookDto {
 
 	private Date date;
 
-	private int sold, page, price;
+	private int sold, page, price, voters;
+	
+	private Double rating;
 	
 	private String imagePath;
 }

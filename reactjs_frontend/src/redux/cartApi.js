@@ -6,7 +6,7 @@ const api = axios.create({
     baseURL: 'http://localhost:8080/api'
 })
 
-const createConfig = () => {
+export const createConfig = () => {
     const token = sessionStorage.getItem('token');
     return {
         headers: {
@@ -22,7 +22,10 @@ export const getCarts = createAsyncThunk('cartReducers/getCarts', async (usernam
 })
 
 export const addCart = createAsyncThunk('cartReducers/addCart', async (payload) => {
-    api.post(`/carts/${payload.username}`, payload.cart, createConfig()).then(res => { toast.success('Added to your cart.') }).catch(error => toast.error(error.message));
+    const res = await api.post(`/carts/${payload.username}`, payload.cart, createConfig())
+        .then(res => { toast.success('Added to your cart.'); return res })
+        .catch(error => toast.error(error.message));
+    return res.data;
 })
 
 export const deleteCart = createAsyncThunk('cartReducers/deleteCart', async (payload) => {

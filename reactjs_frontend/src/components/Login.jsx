@@ -5,19 +5,13 @@ import { NavLink, useNavigate } from 'react-router-dom'
 
 function Login() {
 
-    const navigate = useNavigate();
-
-    const [username, setUsername] = useState('');
-
-    const [password, setPassword] = useState('');
-
-    const [rememberMe, setRememberMe] = useState(false);
-
-    const { isLoggedIn } = useSelector(state => state.authReducer);
-
-    const [isEditable, setIsEditable] = useState(!isLoggedIn);
-
     const dispatch = useDispatch()
+    const navigate = useNavigate();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [rememberMe, setRememberMe] = useState(false);
+    const { isLoggedIn } = useSelector(state => state.authReducer);
+    const [isEditable, setIsEditable] = useState(!isLoggedIn);
 
     const handleLogin = () => {
         if (!isLoggedIn)
@@ -48,14 +42,12 @@ function Login() {
                                                     <input type="text" id="form3Example1c" className="form-control" placeholder='Your Username' value={username} onChange={e => setUsername(e.target.value)} />
                                                 </div>
                                             </div>
-
                                             <div className="d-flex flex-row align-items-center mb-4">
                                                 <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
                                                 <div className="form-outline flex-fill mb-0">
                                                     <input type="password" id="form3Example4c" className="form-control" placeholder='Password' value={password} onChange={e => setPassword(e.target.value)} />
                                                 </div>
                                             </div>
-
                                             <div className="d-flex justify-content-between mb-5 align-items-center">
                                                 <div className='d-flex justify-content-between form-check'>
                                                     <input className="form-check-input mx-2" type="checkbox" value="" id="form2Example3c" checked={rememberMe} onChange={e => setRememberMe(e.target.checked)} />
@@ -63,10 +55,8 @@ function Login() {
                                                         Remember me
                                                     </label>
                                                 </div>
-
                                                 <NavLink className='btn btn-outline-dark' to={'/register'}>Register</NavLink>
                                             </div>
-
                                             <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                                                 <button type="button" className="btn btn-primary" onClick={handleLogin} disabled={!isEditable}>Login</button>
                                             </div>

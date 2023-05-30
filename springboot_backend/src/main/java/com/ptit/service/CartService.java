@@ -12,7 +12,7 @@ public interface CartService {
 	
 	List<CartDto> findAllByUsername(String username);
 	
-	void save(String username, CartDto cart);
+	CartDto save(String username, CartDto cart);
 	
 	void deleteByUsername(String username);
 

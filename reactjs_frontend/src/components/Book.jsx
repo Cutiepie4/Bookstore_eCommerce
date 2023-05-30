@@ -6,17 +6,12 @@ import { addBook, findBookById, updateBook } from '../redux/bookApi';
 
 function Book() {
 
-    const { id } = useParams();
-
-    const [image, setImage] = useState(null);
-
-    const [book, setBook] = useState({});
-
-    const [isEditable, setIsEditable] = useState(id == 0 ? true : false);
-
-    const navigate = useNavigate();
-
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { id } = useParams();
+    const [image, setImage] = useState(null);
+    const [book, setBook] = useState({});
+    const [isEditable, setIsEditable] = useState(id == 0 ? true : false);
 
     useEffect(() => {
         const findBook = async () => {
@@ -35,7 +30,7 @@ function Book() {
         const formData = new FormData();
         if (image !== null) formData.append('image', image);
         formData.append('book', JSON.stringify(book));
-        id === 0 ? dispatch(addBook(formData)) : dispatch(updateBook(formData));
+        id == 0 ? dispatch(addBook(formData)) : dispatch(updateBook(formData));
         navigate('/books');
     }
 
@@ -105,7 +100,6 @@ function Book() {
                     <div className="col-12">
                         <button className="btn btn-success" onClick={handleSubmit}>{id === 0 ? 'Add' : (isEditable ? 'Save' : 'Edit')}</button>
                     </div>
-                    {/* <label>{book.imagePath}</label> */}
                 </div>
 
                 <div className="col-lg-6">

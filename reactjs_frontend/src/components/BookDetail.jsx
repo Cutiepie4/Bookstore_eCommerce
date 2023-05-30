@@ -7,24 +7,18 @@ import { addCart } from '../redux/cartApi';
 import { deleteComment, fetchComments, postComment } from '../redux/commentApi';
 import Rating from 'react-rating';
 import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
+import { getRating, postRating } from '../redux/ratingApi';
 
 function BookDetail(props) {
-
-    const { username, isLoggedIn, role } = useSelector(state => state.authReducer);
-
     const dispatch = useDispatch();
-
-    const { id } = useParams();
-
-    const [expanded, setExpanded] = useState(false);
-
-    const [cart, setCart] = useState({ quantity: 1, book: {} });
-
     const navigate = useNavigate();
-
+    const { username, isLoggedIn, role } = useSelector(state => state.authReducer);
+    const { id } = useParams();
+    const [expanded, setExpanded] = useState(false);
+    const [cart, setCart] = useState({ quantity: 1, book: {} });
     const [listComments, setListCommments] = useState([]);
-
     const [currentComment, setCurrentComment] = useState('');
+    const [vote, setVote] = useState(0)
 
     const toggleExpanded = () => {
         setExpanded(!expanded);
@@ -51,16 +45,26 @@ function BookDetail(props) {
             setListCommments(commentData);
         }
         fetchListComments();
+
+        const fetchUserVote = async () => {
+            const voteData = await getRating({ username, bookId: id });
+            setVote(voteData.vote);
+        }
+        fetchUserVote();
     }, [])
 
-    const handlePost = async () => {
-        const newComment = await postComment(username, cart.book.id, currentComment);
+    const handlePostComment = async () => {
+        const newComment = await postComment({ username, bookId: cart.book.id, comment: currentComment });
         setListCommments([...listComments, newComment]);
         setCurrentComment('');
     }
 
-    const handleDelete = (id) => {
-        deleteComment(id).then(res => setListCommments(listComments.filter(item => item.id !== id)));
+    const handleDeleteComment = (commentId) => {
+        deleteComment(commentId).then(res => setListCommments(listComments.filter(item => item.id !== commentId)));
+    }
+
+    const handleVoting = async () => {
+        await postRating({ username, bookId: cart.book.id, vote });
     }
 
     return (
@@ -119,7 +123,7 @@ function BookDetail(props) {
                                                         <p className="mb-0 text-muted">
                                                             {formatDate(comment.date)}
                                                         </p>
-                                                        {isLoggedIn && (role === 'ADMIN' || username === comment.user.username) && <div className="link-muted" onClick={() => handleDelete(comment.id)}>
+                                                        {isLoggedIn && (role === 'ADMIN' || username === comment.user.username) && <div className="link-muted" onClick={() => handleDeleteComment(comment.id)}>
                                                             <i className="fa-solid fa-trash fa-sm cart-quantity ms-2"></i>
                                                         </div>}
                                                     </div>
@@ -150,23 +154,25 @@ function BookDetail(props) {
                                                 <div className="align-items-center justify-content-center">
                                                     <p className='mb-2'>Rating here</p>
                                                     <Rating
-                                                        emptySymbol={<FaRegStar className="star-empty me-2" />}
-                                                        fullSymbol={<FaStar className="star-full" />
-                                                        }
+                                                        initialRating={vote}
+                                                        emptySymbol={<FaStar className="star-empty" />}
+                                                        fullSymbol={<FaStar className="star-full" />}
+                                                        halfSymbol={<FaStarHalfAlt className="star-half" />}
+                                                        onChange={newVote => setVote(newVote)}
                                                     />
                                                     <span className="book-voters card-vote"></span>
-                                                    <button className='btn btn-primary btn-sm'>Vote</button>
+                                                    <button className='btn btn-primary btn-sm' onClick={handleVoting}>Vote</button>
                                                 </div>
                                                 <div className="form-outline">
                                                     <label className="form-label my-3" htmlFor="textAreaExample">What is your opinion?</label>
                                                     <textarea className="form-control" id="textAreaExample" rows="4" value={currentComment} onChange={e => setCurrentComment(e.target.value)}></textarea>
                                                 </div>
                                                 <div className="d-flex float-end mt-3">
-                                                    <button type="button" className="btn btn-success" onClick={handlePost}>
+                                                    <button type="button" className="btn btn-success" onClick={handlePostComment}>
                                                         Send <i className="fas fa-long-arrow-alt-right ms-1"></i>
                                                     </button>
                                                 </div>
-                                            </>) : <h4>Please login to comment.</h4>}
+                                            </>) : <h4>Please login to comment and rating.</h4>}
                                         </div>
                                     </div>
                                 </div>

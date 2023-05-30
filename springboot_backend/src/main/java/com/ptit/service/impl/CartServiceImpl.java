@@ -27,9 +27,19 @@ public class CartServiceImpl implements CartService {
 	UserRepository userRepository;
 
 	@Override
-	public void save(String username, CartDto cart) {
-		cartRepository.save(new Cart(new CartKey(username, cart.getBook().getId()), userRepository.findById(username).get(),
-				cart.getBook(), cart.getQuantity()));
+	public CartDto save(String username, CartDto cart) {
+		CartKey key = new CartKey(username, cart.getBook().getId());
+		if (cartRepository.existsById(key)) {
+			Cart oldCart = cartRepository.findById(key).get();
+			oldCart.setQuantity(oldCart.getQuantity() + cart.getQuantity());
+			cartRepository.save(oldCart);
+			return modelMapper.map(oldCart, CartDto.class);
+		} else {
+			Cart newCart = new Cart(new CartKey(username, cart.getBook().getId()),
+					userRepository.findById(username).get(), cart.getBook(), cart.getQuantity());
+			cartRepository.save(newCart);
+			return modelMapper.map(newCart, CartDto.class);
+		}
 	}
 
 	@Override

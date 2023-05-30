@@ -12,6 +12,7 @@ import com.ptit.model.dto.BookDto;
 import com.ptit.model.entity.Book;
 import com.ptit.repository.BookRepository;
 import com.ptit.service.BookService;
+import com.ptit.service.RatingService;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -22,10 +23,17 @@ public class BookServiceImpl implements BookService {
 	@Autowired
 	BookRepository bookRepository;
 
+	@Autowired
+	RatingService ratingService;
+
 	@Override
 	public List<BookDto> findAll() {
-		return bookRepository.findAll().stream().map(book -> modelMapper.map(book, BookDto.class))
-				.collect(Collectors.toList());
+		return bookRepository.findAll().stream().map(book -> {
+			BookDto bookDto = modelMapper.map(book, BookDto.class);
+			bookDto.setVoters(ratingService.getVoters(book.getId()));
+			bookDto.setRating(ratingService.getOverallRating(book.getId()));
+			return bookDto;
+		}).collect(Collectors.toList());
 	}
 
 	@Override
@@ -41,7 +49,12 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public BookDto findById(Long id) {
 		Optional<Book> bookDto = bookRepository.findById(id);
-		if(bookDto.isPresent()) return modelMapper.map(bookDto.get(), BookDto.class);
+		if (bookDto.isPresent()) {
+			BookDto newBook = modelMapper.map(bookDto.get(), BookDto.class);
+			newBook.setVoters(ratingService.getVoters(id));
+			newBook.setRating(ratingService.getOverallRating(id));
+			return newBook;
+		}
 		return new BookDto();
 	}
 

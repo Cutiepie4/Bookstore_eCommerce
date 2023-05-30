@@ -45,3 +45,4 @@ export const findTop5BestSellers = async () => {
     const res = await api.get('/books/best-sellers').catch(error => toast.error(error.message));
     return res.data;
 }
+

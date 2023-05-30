@@ -29,8 +29,8 @@ public class CommentController {
 	}
 
 	@PostMapping("/comments/{bookId}/{username}")
-	public Comment postComment(@PathVariable String bookId, @PathVariable String username, @RequestBody String comment) {
-		Comment newComment = commentService.postComment(username, Long.valueOf(bookId), comment.substring(1, comment.length() - 1));
+	public Comment postComment(@PathVariable String bookId, @PathVariable String username, @RequestBody Comment comment) {
+		Comment newComment = commentService.postComment(username, Long.valueOf(bookId), comment.getComment());
 		return newComment;
 	}
 

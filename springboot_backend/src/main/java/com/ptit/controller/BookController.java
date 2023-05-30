@@ -23,7 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ptit.model.dto.BookDto;
+import com.ptit.model.entity.Rating;
 import com.ptit.service.BookService;
+import com.ptit.service.RatingService;
 
 @RestController
 @CrossOrigin
@@ -36,6 +38,9 @@ public class BookController {
 	@Autowired
 	ObjectMapper objectMapper;
 
+	@Autowired
+	RatingService ratingService;
+
 	@GetMapping("/books")
 	public List<BookDto> getAllBooks() {
 		return bookService.findAll();
@@ -46,27 +51,12 @@ public class BookController {
 		return bookService.findById(Long.valueOf(id));
 	}
 
-//	@PostMapping("/books/new")
-//	public void addBook(@RequestBody BookDto book) {
-//		book.setId(null);
-//		bookService.save(book);
-//	}
-
 	private String saveImage(MultipartFile image) throws IOException {
-		// Define the directory to save the image
-//		String saveDirectory = "C:\\Users\\trvie\\Documents\\Code\\Library_web_fullstack\\reactjs_frontend\\src\\assets\\images";
-		String saveDirectory = "C:\\Users\\trvie\\Documents\\Library_web_fullstack\\reactjs_frontend\\src\\assets\\images";
-
-		// Generate a unique file name for the image
+		String saveDirectory = "C:\\Users\\trvie\\Documents\\Code\\Library_web_fullstack\\reactjs_frontend\\src\\assets\\images";
+//		String saveDirectory = "C:\\Users\\trvie\\Documents\\Library_web_fullstack\\reactjs_frontend\\src\\assets\\images";
 		String fileName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
-		
-		// Create the full file path
 		Path filePath = Paths.get(saveDirectory, fileName);
-
-		// Save the image file to the specified directory
 		Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-		// Return the image path
 		return fileName;
 	}
 
@@ -83,7 +73,7 @@ public class BookController {
 				book.setImagePath(imagePath);
 			}
 			bookService.save(book);
-			
+
 			return bookService.findAll();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -103,7 +93,7 @@ public class BookController {
 				book.setImagePath(imagePath);
 			}
 			bookService.save(book);
-			
+
 			return bookService.findAll();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -116,9 +106,19 @@ public class BookController {
 		bookService.deleteById(Long.valueOf(id));
 		return bookService.findAll();
 	}
-	
+
 	@GetMapping("/books/best-sellers")
 	public List<BookDto> findTop5BestSellers() {
 		return bookService.findTop5BestSellers();
+	}
+
+	@PostMapping("/rating/{bookId}/{username}")
+	public void saveRating(@PathVariable String bookId, @PathVariable String username, @RequestBody Rating rating) {
+		ratingService.saveVote(username, Long.valueOf(bookId), rating.getVote());
+	}
+
+	@GetMapping("/rating/{bookId}/{username}")
+	public Rating getVote(@PathVariable String bookId, @PathVariable String username) {
+		return new Rating(null, null, null, ratingService.getVote(username, Long.valueOf(bookId)));
 	}
 }

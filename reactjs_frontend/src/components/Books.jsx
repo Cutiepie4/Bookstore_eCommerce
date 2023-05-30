@@ -6,9 +6,7 @@ import { deleteBook, fetchBooks } from '../redux/bookApi';
 function Books() {
 
     const navigate = useNavigate();
-
     const dispatch = useDispatch();
-
     const { isLoading, listBooks } = useSelector(state => state.bookReducer);
 
     useEffect(() => {

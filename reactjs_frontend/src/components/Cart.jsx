@@ -7,15 +7,9 @@ import { NavLink } from 'react-router-dom';
 
 function Cart(props) {
 
-    const { username } = useSelector(state => state.authReducer);
-
     const dispatch = useDispatch();
-
+    const { username } = useSelector(state => state.authReducer);
     const { listCarts } = useSelector(state => state.cartReducer);
-
-    useEffect(() => {
-        dispatch(getCarts(username));
-    }, [])
 
     return (
         <section className="h-100 h-custom">
@@ -84,7 +78,7 @@ function Cart(props) {
 
                                         <div className="d-flex justify-content-between" style={{ fontWeight: 500 }}>
                                             <p className="mb-0">Shipping</p>
-                                            <p className="mb-0">30,000 vnđ</p>
+                                            <p className="mb-0">30.000 vnđ</p>
                                         </div>
                                         <hr className="my-4" />
                                         <div className="d-flex justify-content-between mb-4" style={{ fontWeight: 500 }}>
