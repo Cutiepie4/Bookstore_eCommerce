@@ -21,6 +21,7 @@ function App() {
 
         <Route path='/' element={<Nav />} >
           <Route index element={<Home />} />
+          <Route path='/home' element={<Home />} />
           <Route path='/book-detail/:id' element={<BookDetail />} />
 
           <Route element={<AdminRoute />}>

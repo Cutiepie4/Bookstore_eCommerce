@@ -3,15 +3,21 @@ import { NavLink, Outlet } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/authSlice';
 import { getCarts } from '../redux/cartApi';
+import { fetchBooks } from '../redux/bookApi';
 
 function Nav() {
 
     const dispatch = useDispatch();
     const { isLoggedIn, role, username } = useSelector(state => state.authReducer);
     const { cartsCount } = useSelector(state => state.cartReducer);
+    const { listBooks } = useSelector(state => state.bookReducer);
     const [count, setCount] = useState(0);
+    const [keyword, setKeyword] = useState('');
+    const [filteredBook, setFilteredBook] = useState([]);
+    const [isFocused, setIsFocused] = useState(false);
 
     useEffect(() => {
+        dispatch(fetchBooks());
         if (isLoggedIn && username) {
             dispatch(getCarts(username));
         }
@@ -21,13 +27,40 @@ function Nav() {
         setCount(cartsCount);
     }, [cartsCount]);
 
+    useEffect(() => {
+        if (keyword.trim.length == 0) {
+            setFilteredBook([]);
+        }
+        if (listBooks && keyword.trim().length > 0) {
+            setFilteredBook(listBooks.filter(book => book.title.toLowerCase().includes(keyword.toLowerCase())));
+        }
+    }, [keyword])
+
     return (
         <>
             <div className="header">
                 <div className="browse">
                     <NavLink style={{ textDecoration: 'none', color: '#8b939c' }} to={'/'}><div className="header-title">book<span>store</span></div></NavLink>
                     <div className="search-bar">
-                        <input type="text" placeholder="Search Book" />
+                        <div className='d-flex align-items-center'>
+                            <input type="text" placeholder="Search Book" value={keyword} onChange={e => setKeyword(e.target.value)} onFocus={() => setIsFocused(true)} />
+                            <i className="fa-solid fa-xmark fa-xs hover-red" onClick={() => setKeyword('')}></i>
+                        </div>
+                        {filteredBook.length > 0 && isFocused ?
+                            <div className="dropdown card" >
+                                {filteredBook.map(book => (
+                                    <NavLink key={book.id} className={'text-muted'} to={`/book-detail/${book.id}`} style={{ textDecoration: 'none' }}>
+                                        <div className='result-item' onClick={() => { setIsFocused(false) }}>
+                                            {book.title}
+                                        </div>
+                                    </NavLink>))
+                                }
+                            </div>
+                            : keyword.length > 0 && isFocused &&
+                            <div className='dropdown'>
+                                <div className="result-item">No matching found.</div>
+                            </div>
+                        }
                     </div>
                 </div>
                 <div className="profile">

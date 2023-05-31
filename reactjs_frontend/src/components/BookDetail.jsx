@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addCart } from '../redux/cartApi';
 import { deleteComment, fetchComments, postComment } from '../redux/commentApi';
 import Rating from 'react-rating';
-import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
+import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import { getRating, postRating } from '../redux/ratingApi';
 
 function BookDetail(props) {
@@ -15,7 +15,7 @@ function BookDetail(props) {
     const { username, isLoggedIn, role } = useSelector(state => state.authReducer);
     const { id } = useParams();
     const [expanded, setExpanded] = useState(false);
-    const [cart, setCart] = useState({ quantity: 1, book: {} });
+    const [currentCart, setCart] = useState({ quantity: 1, book: {} });
     const [listComments, setListCommments] = useState([]);
     const [currentComment, setCurrentComment] = useState('');
     const [vote, setVote] = useState(0)
@@ -36,7 +36,7 @@ function BookDetail(props) {
     useEffect(() => {
         const findBook = async () => {
             const bookData = await findBookById(id);
-            setCart({ ...cart, book: bookData });
+            setCart({ ...currentCart, book: bookData });
         };
         findBook();
 
@@ -50,11 +50,12 @@ function BookDetail(props) {
             const voteData = await getRating({ username, bookId: id });
             setVote(voteData.vote);
         }
-        fetchUserVote();
-    }, [])
+        if (isLoggedIn)
+            fetchUserVote();
+    }, [id])
 
     const handlePostComment = async () => {
-        const newComment = await postComment({ username, bookId: cart.book.id, comment: currentComment });
+        const newComment = await postComment({ username, bookId: currentCart.book.id, comment: currentComment });
         setListCommments([...listComments, newComment]);
         setCurrentComment('');
     }
@@ -64,7 +65,7 @@ function BookDetail(props) {
     }
 
     const handleVoting = async () => {
-        await postRating({ username, bookId: cart.book.id, vote });
+        await postRating({ username, bookId: currentCart.book.id, vote });
     }
 
     return (
@@ -72,28 +73,37 @@ function BookDetail(props) {
             <div className='container card col-md-12 col-lg-10' style={{ backgroundColor: '#faf9ba' }}>
                 <div className="container px-4 px-lg-5 my-5 ">
                     <div className="row gx-4 gx-lg-5 align-items-center">
-                        <div className="col-md-4 align-self-start" ><img className="card-img-top mb-5 mb-md-0" src={cart.book.imagePath && require(`../assets/images/${cart.book.imagePath}`)} alt="book-cover" /></div>
+                        <div className="col-md-4 align-self-start" ><img className="card-img-top mb-5 mb-md-0" src={currentCart.book.imagePath && require(`../assets/images/${currentCart.book.imagePath}`)} alt="book-cover" /></div>
                         <div className="col-md-8">
-                            <h1 className="display-6 mb-3 fw-bolder" style={{ margin: '0 0' }}>{cart.book.title}</h1>
-                            <h3 className="fs-6 mb-5 fw-normal">by {cart.book.author}</h3>
+                            <h1 className="display-6 mb-3 fw-bolder" style={{ margin: '0 0' }}>{currentCart.book.title}</h1>
+                            <h3 className="fs-6 mb-3 fw-normal">by {currentCart.book.author}</h3>
+                            <Rating
+                                className='mb-4'
+                                initialRating={currentCart.book.rating}
+                                emptySymbol={<FaStar className="star-empty" />}
+                                fullSymbol={<FaStar className="star-full" />}
+                                halfSymbol={<FaStarHalfAlt className="star-half" />}
+                                readonly={true}
+                            />
+                            <span className="book-voters card-vote">{currentCart.book.voters} voters</span>
                             <p id='description' className={`lead fs-6 ${expanded ? 'expanded' : ''} mb-5`} onClick={toggleExpanded}>
-                                {cart.book.description}
+                                {currentCart.book.description}
                             </p>
                             <div className="fs-4 mb-3">
                                 <span className="text-decoration-line-through"></span>
-                                <span style={{ color: 'red' }}>{cart.book.price && cart.book.price.toLocaleString() + ' vnđ'} </span>
+                                <span style={{ color: 'red' }}>{currentCart.book.price && currentCart.book.price.toLocaleString() + ' vnđ'} </span>
                             </div>
                             <div className="d-flex align-items-center mb-3">
-                                <i className="fa-solid fa-minus me-2 cart-quantity" onClick={() => { cart.quantity > 1 && setCart({ ...cart, quantity: cart.quantity - 1 }) }}></i>
+                                <i className="fa-solid fa-minus me-2 currentCart-quantity" onClick={() => { currentCart.quantity > 1 && setCart({ ...currentCart, quantity: currentCart.quantity - 1 }) }}></i>
                                 <div className='btn btn-outline-dark me-2 flex-shrink-0' style={{ minWidth: '40px' }} >
-                                    {cart.quantity}
+                                    {currentCart.quantity}
                                 </div>
-                                <i className="fa-solid fa-plus cart-quantity" onClick={() => { setCart({ ...cart, quantity: cart.quantity + 1 }) }}></i>
+                                <i className="fa-solid fa-plus hover-red" onClick={() => { setCart({ ...currentCart, quantity: currentCart.quantity + 1 }) }}></i>
                             </div>
                             <div className='d-flex'>
-                                <button className="btn btn-outline-dark flex-shrink-0" type="button" onClick={() => { isLoggedIn ? dispatch(addCart({ cart, username })) : navigate('/login') }}>
-                                    <i className="bi-cart-fill me-1"></i>
-                                    Add to cart
+                                <button className="btn btn-outline-dark flex-shrink-0" type="button" onClick={() => { isLoggedIn ? dispatch(addCart({ cart: currentCart, username })) : navigate('/login') }}>
+                                    <i className="bi-currentCart-fill me-1"></i>
+                                    Add to Cart
                                 </button>
                             </div>
                         </div>
@@ -124,7 +134,7 @@ function BookDetail(props) {
                                                             {formatDate(comment.date)}
                                                         </p>
                                                         {isLoggedIn && (role === 'ADMIN' || username === comment.user.username) && <div className="link-muted" onClick={() => handleDeleteComment(comment.id)}>
-                                                            <i className="fa-solid fa-trash fa-sm cart-quantity ms-2"></i>
+                                                            <i className="fa-solid fa-trash fa-sm currentCart-quantity ms-2"></i>
                                                         </div>}
                                                     </div>
                                                     <p className="mb-0">
