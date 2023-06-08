@@ -13,6 +13,13 @@ function Book() {
     const [book, setBook] = useState({});
     const [isEditable, setIsEditable] = useState(id == 0 ? true : false);
 
+    const [titleMessage, setTitleMessage] = useState('');
+    const [authorMessage, setAuthorMessage] = useState('');
+    const [dateMessage, setDateMessage] = useState('');
+    const [pageMessage, setPageMessage] = useState('');
+    const [soldMessage, setSoldMessage] = useState('');
+    const [priceMessage, setPriceMessage] = useState('');
+
     useEffect(() => {
         const findBook = async () => {
             const bookData = await findBookById(id);
@@ -46,43 +53,50 @@ function Book() {
     }
 
     const handleSubmit = (e) => {
+        let ok = true;
         e.preventDefault();
         if (!isEditable) {
-            e.preventDefault();
             setIsEditable(true);
             return;
         }
-        if (!checkEmptyInput(book.title) || !checkEmptyInput(book.author) || !checkEmptyInput(book.date)) {
-            e.preventDefault();
-            toast.error('You can not leave the required field blank!');
-            return;
+        if (!checkEmptyInput(book.title)) {
+            setTitleMessage('Required.');
+            ok = false;
+        }
+        if (!checkEmptyInput(book.author)) {
+            ok = false;
+            setAuthorMessage('Required.');
+        }
+        if (!checkEmptyInput(book.date)) {
+            ok = false;
+            setDateMessage('Required.');
         }
         if (!checkNumber(book.page)) {
-            e.preventDefault();
-            toast.error('The number of pages must be positive');
-            return;
+            ok = false;
+            setPageMessage('Must be positive');
         }
         if (!checkNumber(book.sold)) {
-            e.preventDefault();
-            toast.error('The sold must be positive');
-            return;
-        } if (!checkNumber(book.price)) {
-            e.preventDefault();
-            toast.error('The price must be positive');
-            return;
+            ok = false;
+            setSoldMessage('Must be positive');
+        }
+        if (!checkNumber(book.price)) {
+            ok = false;
+            setPriceMessage('Must be positive');
         }
 
         if (!book.imagePath && (!image || image.length == 0)) {
-            e.preventDefault();
-            toast.error('You must choose a cover for the new book!');
-            return;
+            ok = false;
+            toast.info('You must choose a cover for the new book!');
         }
-        const formData = new FormData();
-        if (image !== null) formData.append('image', image);
-        formData.append('book', JSON.stringify(book));
 
-        id == 0 ? (window.confirm('Are you sure to add this book ?') ? handleAddBook(formData) : e.preventDefault())
-            : (window.confirm('Are you sure to update this book ?') ? handleUpdateBook(formData) : e.preventDefault());
+        if (ok) {
+            const formData = new FormData();
+            if (image !== null) formData.append('image', image);
+            formData.append('book', JSON.stringify(book));
+
+            id == 0 ? (window.confirm('Are you sure to add this book ?') ? handleAddBook(formData) : e.preventDefault())
+                : (window.confirm('Are you sure to update this book ?') ? handleUpdateBook(formData) : e.preventDefault());
+        }
     }
 
     return (
@@ -92,11 +106,11 @@ function Book() {
                 <div className="col-lg-6">
                     <div className="row">
                         <div className="col">
-                            <label className="col-lg-10 form-label required">Title</label>
+                            <label className="col-lg-10 form-label"><span className='required'>Title</span> <span style={{ color: 'red' }}>{titleMessage}</span></label>
                             <input type="text" className="col-lg-10  form-control" value={book.title} onChange={(e) => { setBook({ ...book, title: e.target.value }) }} disabled={!isEditable} />
                         </div>
                         <div className="col">
-                            <label className="col-lg-10 form-label required">Author</label>
+                            <label className="col-lg-10 form-label"><span className='required'>Author</span> <span style={{ color: 'red' }}>{authorMessage}</span></label>
                             <input type="text" className="col-lg-10  form-control" value={book.author} onChange={(e) => { setBook({ ...book, author: e.target.value }) }} disabled={!isEditable} />
                         </div>
                     </div>
@@ -109,12 +123,11 @@ function Book() {
 
                     <div className="row">
                         <div className="col">
-                            <label className="col-lg-10 form-label required">Date
-                                Established</label>
+                            <label className="col-lg-10 form-label"><span className='required'>Released Date</span> <span style={{ color: 'red' }}>{dateMessage}</span></label>
                             <input type="date" className="col-lg-10  form-control" value={book.date} onChange={(e) => { setBook({ ...book, date: e.target.value }) }} disabled={!isEditable} />
                         </div>
                         <div className="col">
-                            <label className="col-lg-10 form-label">Number of pages</label>
+                            <label className="col-lg-10 form-label"><span>Pages</span> <span style={{ color: 'red' }}>{pageMessage}</span></label>
                             <input min={1} type="number" className="col-lg-10  form-control" value={book.page} onChange={(e) => { setBook({ ...book, page: e.target.value }) }} disabled={!isEditable} />
                         </div>
                     </div>
@@ -139,11 +152,11 @@ function Book() {
                             </select>
                         </div>
                         <div className="col-4">
-                            <label className="col-lg-10 form-label">Sold Copies</label>
+                            <label className="col-lg-10 form-label"><span>Sold Copies</span> <span style={{ color: 'red' }}>{soldMessage}</span></label>
                             <input min={0} type="number" className="col-lg-10  form-control" value={book.sold} onChange={(e) => { setBook({ ...book, sold: e.target.value }) }} disabled={!isEditable} />
                         </div>
                         <div className="col-4">
-                            <label className="col-lg-10 form-label">Price (vnd)</label>
+                            <label className="col-lg-10 form-label"><span>Price (vnđ)</span> <span style={{ color: 'red' }}>{priceMessage}</span></label>
                             <input min={1} type="number" className="col-lg-10  form-control" value={book.price} onChange={(e) => { setBook({ ...book, price: e.target.value }) }} disabled={!isEditable} />
                         </div>
                     </div>

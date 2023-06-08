@@ -52,15 +52,15 @@ function OrderDetail() {
                     <h3>Order Status: <span className='ms-2' style={{ color: `${selectColor()}` }}>{`${orderStatus}`}</span></h3>
                     {role === 'ADMIN' && <i className="fa-solid fa-caret-down fa-2xl ms-2 hover-red" onClick={() => setToggleDisplay(!toggleDisplay)}></i>}
                     {toggleDisplay && <ul className="card dropdown-option position-absolute bg-white border p-0 list-unstyled" style={{ width: 'max-content', right: 0 }}>
-                        <li className="border-bottom p-2" onClick={() => handleChangeStatus('Pending')}>
+                        {/* <li className="border-bottom p-2" onClick={() => handleChangeStatus('Pending')}>
                             Set to <span style={{ color: 'darkgoldenrod', fontWeight: 'bold' }}>Pending</span>
-                        </li>
-                        <li className="border-bottom p-2" onClick={() => handleChangeStatus('In Shipping')}>
+                        </li> */}
+                        {orderStatus !== 'In Shipping' && orderStatus !== 'Delivered' && <li className="border-bottom p-2 disabled" onClick={() => handleChangeStatus('In Shipping')}>
                             Set to <span style={{ color: '#0dcaf0', fontWeight: 'bold' }}>In Shipping</span>
-                        </li>
-                        <li className="border-bottom p-2" onClick={() => handleChangeStatus('Delivered')}>
+                        </li>}
+                        {orderStatus !== 'Delivered' && <li className="border-bottom p-2" onClick={() => handleChangeStatus('Delivered')}>
                             Set to <span style={{ color: 'green', fontWeight: 'bold' }}>Delivered</span>
-                        </li>
+                        </li>}
                         <li className="border-bottom p-2" style={{ color: 'red', fontWeight: 'bold' }} onClick={handleDeleteOrder}>
                             Delete this order
                         </li>

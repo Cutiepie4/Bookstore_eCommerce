@@ -75,7 +75,7 @@ function Nav() {
                         <i className="fa-solid fa-user fa-lg p-2"></i>
                         {username ? username : 'Login'}
                         <ul className="dropdown">
-                            {isLoggedIn ? (<li className='border-bottom'><NavLink>Manage user</NavLink></li>) : (<li><NavLink to="/login">Login</NavLink></li>)}
+                            {isLoggedIn ? (<li className='border-bottom'><NavLink to={'#'}>Manage user</NavLink></li>) : (<li><NavLink to="/login">Login</NavLink></li>)}
                             {role === 'ADMIN' && (<li className='border-bottom'><NavLink to='/books'>Book Storage</NavLink></li>)}
                             {role === 'ADMIN' && (<li className='border-bottom'><NavLink to='/orders'>Orders</NavLink></li>)}
                             {role === 'USER' && (<li className='border-bottom'><NavLink to='/user-orders'>Your Orders</NavLink></li>)}

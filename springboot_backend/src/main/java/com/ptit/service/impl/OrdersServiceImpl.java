@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ptit.model.dto.OrdersDto;
+import com.ptit.model.entity.Book;
 import com.ptit.model.entity.OrderBook;
 import com.ptit.model.entity.Orders;
 import com.ptit.repository.BookRepository;
@@ -65,7 +66,8 @@ public class OrdersServiceImpl implements OrdersService {
 		ordersRepository.save(order);
 
 		ordersDto.getListOrderBooks().stream().forEach(cart -> {
-			OrderBook orderBook = new OrderBook(null, order, bookRepository.findById(cart.getBook().getId()).get(),
+			Book book = bookRepository.findById(cart.getBook().getId()).get();
+			OrderBook orderBook = new OrderBook(null, order, book,
 					cart.getQuantity());
 			orderBookRepository.save(orderBook);
 		});
@@ -73,11 +75,20 @@ public class OrdersServiceImpl implements OrdersService {
 		cartService.deleteByUsername(ordersDto.getUser().getUsername());
 	}
 
+	@Transactional
 	@Override
 	public void changeOrderStatus(OrdersDto ordersDto) {
 		Orders orders = ordersRepository.findById(ordersDto.getId()).get();
 		orders.setOrderStatus(ordersDto.getOrderStatus());
 		ordersRepository.save(orders);
+		if(orders.getOrderStatus().equals("Delivered")) {
+			List<OrderBook> orderedBook = orderBookRepository.findByOrdersId(orders.getId());
+			orderedBook.forEach(orderBook -> {
+				Book book = bookRepository.findById(orderBook.getBook().getId()).get();
+				book.setSold(book.getSold() + orderBook.getQuantity());
+				bookRepository.save(book);
+			});
+		}
 	}
 
 	@Transactional

@@ -15,6 +15,10 @@ function Cart(props) {
     const { listCarts } = useSelector(state => state.cartReducer);
     const [order, setOrder] = useState({ paymentStatus: 'Credit card', orderStatus: 'Pending' });
 
+    const [name, setName] = useState('');
+    const [phoneNumberMessage, setPhoneNumberMessage] = useState('');
+    const [addressMessage, setAddressMessage] = useState('');
+
     const checkEmptyInput = (text) => {
         if (!text || text.trim().length == 0) {
             return false;
@@ -23,17 +27,28 @@ function Cart(props) {
     }
 
     const handlePlaceOrder = (e) => {
-        if (!checkEmptyInput(order.name) || !checkEmptyInput(order.phoneNumber) || !checkEmptyInput(order.address)) {
-            e.preventDefault();
-            toast.error('You can not leave the required field blank!');
-            return;
+        let ok = true;
+        e.preventDefault();
+        if (!checkEmptyInput(order.name)) {
+            ok = false;
+            setName('Required');
+        }
+        if (!checkEmptyInput(order.phoneNumber)) {
+            ok = false;
+            setPhoneNumberMessage('Required');
+        }
+        if (!checkEmptyInput(order.address)) {
+            ok = false;
+            setAddressMessage('Required');
         }
 
-        const asyncDelete = async () => {
-            await placeOrder(order);
-            dispatch(deleteAllCart());
+        if (ok) {
+            const asyncDelete = async () => {
+                await placeOrder(order);
+                dispatch(deleteAllCart());
+            }
+            if (window.confirm('Are you sure to place this order ?\nYou can not change after this.')) asyncDelete();
         }
-        if (window.confirm('Are you sure to place this order ?\nYou can not change after this.')) asyncDelete();
     }
 
     useEffect(() => {
@@ -122,13 +137,13 @@ function Cart(props) {
                                             <div className="col-lg-6 col-xl-6">
                                                 <div className="form-outline mb-3 mb-xl-4">
                                                     <input type="text" className="form-control" placeholder="What's the name" value={order.name} onChange={e => setOrder({ ...order, name: e.target.value })} />
-                                                    <label className="form-label required">Receiver's Name</label>
+                                                    <label className="form-label"><span className='required'>Receiver's Name</span> <span style={{ color: 'red' }}>{name}</span></label>
                                                 </div>
                                             </div>
                                             <div className="col-lg-6 col-xl-6">
                                                 <div className="form-outline mb-3 mb-xl-4">
                                                     <input type="number" className="form-control" placeholder="(+84) XX-XXX-XXX" value={order.phoneNumber} onChange={e => setOrder({ ...order, phoneNumber: e.target.value })} />
-                                                    <label className="form-label required">Receiver's phone number</label>
+                                                    <label className="form-label"><span className='required'>Receiver's phone number</span> <span style={{ color: 'red' }}>{phoneNumberMessage}</span></label>
                                                 </div>
                                             </div>
                                         </div>
@@ -137,7 +152,7 @@ function Cart(props) {
                                             <div className="col-lg-12 col-xl-12">
                                                 <div className="form-outline mb-3 mb-xl-4">
                                                     <input type="text" className="form-control" placeholder="eg. 2848 El Caminito Street, Los Angeles" value={order.address} onChange={e => setOrder({ ...order, address: e.target.value })} />
-                                                    <label className="form-label required">Delivery Address</label>
+                                                    <label className="form-label"><span className='required'>Delivery Address</span> <span style={{ color: 'red' }}>{addressMessage}</span></label>
                                                 </div>
                                             </div>
                                         </div>
