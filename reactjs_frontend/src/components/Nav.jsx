@@ -76,7 +76,9 @@ function Nav() {
                         {username ? username : 'Login'}
                         <ul className="dropdown">
                             {isLoggedIn ? (<li className='border-bottom'><NavLink>Manage user</NavLink></li>) : (<li><NavLink to="/login">Login</NavLink></li>)}
-                            {role == 'ADMIN' && (<li className='border-bottom'><NavLink to='/books'>Manage storage</NavLink></li>)}
+                            {role === 'ADMIN' && (<li className='border-bottom'><NavLink to='/books'>Book Storage</NavLink></li>)}
+                            {role === 'ADMIN' && (<li className='border-bottom'><NavLink to='/orders'>Orders</NavLink></li>)}
+                            {role === 'USER' && (<li className='border-bottom'><NavLink to='/user-orders'>Your Orders</NavLink></li>)}
                             {isLoggedIn && (<li className='border-bottom' onClick={() => dispatch(logout())}><a href='http://localhost:8080/api/auth/logout'>Logout</a></li>)}
                         </ul>
                     </div>

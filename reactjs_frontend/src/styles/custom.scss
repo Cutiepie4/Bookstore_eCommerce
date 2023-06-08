@@ -985,3 +985,50 @@ div.dropdown {
         opacity: 1;
     }
 }
+
+/****************/
+
+tr.row-hover {
+    &:hover {
+        /* Your hover styles here */
+        background-color: #ccc;
+    }
+
+    cursor: pointer;
+}
+
+.custom-hover {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+/***************/
+
+.dropdown-option {
+    position: absolute;
+    top: 90%;
+    background-color: white;
+    border: 1px solid black;
+    padding: 0;
+    list-style: none;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.dropdown-option li {
+    padding: 8px;
+
+    cursor: pointer;
+
+    &:hover {
+        background-color: #ccc;
+    }
+}
+
+/*************/
+.required::after {
+    content: "*";
+    color: red;
+    margin-left: 5px;
+}

@@ -1,6 +1,7 @@
 package com.ptit.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -15,4 +16,7 @@ public interface RatingRepository extends JpaRepository<Rating, RatingKey> {
 	@Query(value = "SELECT COUNT(username) FROM rating WHERE book_id = :bookId", nativeQuery = true)
 	int findVoters(@Param("bookId") Long bookId);
 
+	@Modifying
+	@Query(value = "DELETE FROM rating WHERE book_id = :bookId", nativeQuery = true)
+	void deleteAllByBook(@Param("bookId") Long bookId);
 }

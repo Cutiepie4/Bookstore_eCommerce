@@ -12,4 +12,6 @@ public interface RatingService {
 	int getVoters(Long bookId);
 	
 	int getVote(String username, Long bookId);
+	
+	void deleteByBookId(Long bookId);
 }

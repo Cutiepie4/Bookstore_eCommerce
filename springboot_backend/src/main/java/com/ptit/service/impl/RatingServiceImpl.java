@@ -45,5 +45,10 @@ public class RatingServiceImpl implements RatingService {
 		if(rating.isPresent()) return rating.get().getVote();
 		return 0;
 	}
+
+	@Override
+	public void deleteByBookId(Long bookId) {
+		ratingRepository.deleteAllByBook(bookId);
+	}
 	
 }

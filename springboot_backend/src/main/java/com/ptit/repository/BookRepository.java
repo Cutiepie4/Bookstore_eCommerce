@@ -11,4 +11,6 @@ public interface BookRepository extends JpaRepository<Book, Long>{
 	
 	@Query(value = "SELECT TOP(5) * FROM books ORDER BY sold DESC", nativeQuery=true)
 	List<Book> findTop5BestSellers();
+	
+	boolean existsByTitleAndAuthor(String title, String author);
 }

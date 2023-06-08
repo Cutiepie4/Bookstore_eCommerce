@@ -17,4 +17,6 @@ public interface BookService {
 	void deleteById(Long id);
 	
 	List<BookDto> findTop5BestSellers();
+	
+	boolean validate(BookDto bookDto);
 }

@@ -75,7 +75,7 @@ public class SecurityConfiguration {
 				.anyRequest().authenticated());
 
 		http.formLogin(login -> login.loginPage("http://localhost:3000/login"));
-		http.logout(logout -> logout.logoutUrl("/api/auth/logout"));
+		http.logout(logout -> logout.logoutUrl("/api/auth/logout").logoutSuccessUrl("http://localhost:3000/login"));
 
 		http.headers(t -> t.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Credentials", "true"))
 				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "http://localhost:3000"))

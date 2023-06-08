@@ -15,7 +15,17 @@ function Register(props) {
 
     const [agree, setAgree] = useState(false);
 
+    const checkEmptyInput = (text) => {
+        return !text || text.trim().length == 0;
+    }
+
     const validate = () => {
+
+        if (checkEmptyInput(account.username) || checkEmptyInput(account.password) || checkEmptyInput(account.email)) {
+            toast.error('Please do not leave any field blank.')
+            return false;
+        }
+
         if (!agree) {
             toast.error('Please check the Term of Services');
             return false;
@@ -28,7 +38,7 @@ function Register(props) {
     }
 
     const handleRegister = (e) => {
-        if (validate()) {
+        if (validate() && window.confirm('Are you sure to register this account ?')) {
             dispatch(register(account));
         }
     }
@@ -47,13 +57,13 @@ function Register(props) {
                                             <div className="d-flex flex-row align-items-center mb-4">
                                                 <i className="fas fa-user fa-lg me-3 fa-fw"></i>
                                                 <div className="form-outline flex-fill mb-0">
-                                                    <input type="text" id="form3Example1c" className="form-control" placeholder='Your Username' value={account.username} onChange={e => setAccount({ ...account, username: e.target.value })} />
+                                                    <input type="text" className="form-control" placeholder='Your Username' value={account.username} onChange={e => setAccount({ ...account, username: e.target.value })} />
                                                 </div>
                                             </div>
                                             <div className="d-flex flex-row align-items-center mb-4">
                                                 <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
                                                 <div className="form-outline flex-fill mb-0">
-                                                    <input type="email" id="form3Example3c" className="form-control" placeholder='Your Email' value={account.email} onChange={e => setAccount({ ...account, email: e.target.value })} />
+                                                    <input type="email" className="form-control" placeholder='Your Email' value={account.email} onChange={e => setAccount({ ...account, email: e.target.value })} />
                                                 </div>
                                             </div>
                                             <div className="d-flex flex-row align-items-center mb-4">

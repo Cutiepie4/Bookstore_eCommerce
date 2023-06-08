@@ -35,7 +35,7 @@ public class CartController {
 	}
 	
 	@DeleteMapping("/carts/{username}")
-	public void deleteCart(@PathVariable("username") String username, @RequestBody CartDto newCart) {
+	public void deleteCart(@PathVariable("username") String username, @RequestBody(required = false) CartDto newCart) {
 		if(newCart != null) {
 			cartService.deleteByCartKey(username, newCart);
 		}

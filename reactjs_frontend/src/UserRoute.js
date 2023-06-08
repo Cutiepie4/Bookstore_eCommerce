@@ -11,6 +11,10 @@ function UserRoute(props) {
         return <Navigate to="/login" replace />;
     }
 
+    if (role == 'ADMIN') {
+        return <Navigate to={'/'} replace />;
+    }
+
     return <Outlet />;
 }
 

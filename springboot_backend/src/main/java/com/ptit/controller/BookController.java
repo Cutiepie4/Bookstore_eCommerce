@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,20 +62,25 @@ public class BookController {
 	}
 
 	@PostMapping("/books/new")
-	public List<BookDto> addBook(@RequestParam(value = "image", required = false) MultipartFile image,
+	public ResponseEntity<?> addBook(@RequestParam(value = "image", required = false) MultipartFile image,
 			@RequestParam("book") String bookJson) {
+
 		try {
 			BookDto book = objectMapper.readValue(bookJson, BookDto.class);
 			book.setId(null);
+
+			if (!bookService.validate(book)) {
+				return ResponseEntity.status(500).body("Existed book with the same title and author.");
+			}
 
 			// Save the image file and get the image path
 			if (image != null) {
 				String imagePath = saveImage(image);
 				book.setImagePath(imagePath);
 			}
+			
 			bookService.save(book);
-
-			return bookService.findAll();
+			return ResponseEntity.ok(bookService.findAll());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -82,10 +88,14 @@ public class BookController {
 	}
 
 	@PutMapping("/books/update")
-	public List<BookDto> updateBook(@RequestParam(value = "image", required = false) MultipartFile image,
+	public ResponseEntity<?> updateBook(@RequestParam(value = "image", required = false) MultipartFile image,
 			@RequestParam("book") String bookJson) {
 		try {
 			BookDto book = objectMapper.readValue(bookJson, BookDto.class);
+			
+			if (!bookService.validate(book)) {
+				return ResponseEntity.status(500).body("Existed book with the same title and author.");
+			}
 
 			// Save the image file and get the image path
 			if (image != null) {
@@ -94,7 +104,7 @@ public class BookController {
 			}
 			bookService.save(book);
 
-			return bookService.findAll();
+			return ResponseEntity.ok(bookService.findAll());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

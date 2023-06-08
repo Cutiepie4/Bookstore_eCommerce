@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RatingKey implements Serializable {/**
+public class RatingKey implements Serializable {
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;

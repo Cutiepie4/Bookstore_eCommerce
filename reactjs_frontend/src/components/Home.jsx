@@ -59,7 +59,7 @@ function Home() {
                             <div className={`book-type ${activeGenre === 'Comedy' ? 'active' : ''}`} onClick={() => setActiveGenre('Comedy')}>Comedy</div>
                         </div>
                     </div>
-                    <div className="book-cards">
+                    <div className="book-cards" style={{ maxHeight: '500px', overflowY: 'auto' }}>
                         {!isLoading ? <HomeBook listBooks={activeGenre === 'All' ? listBooks : showingBooks} /> : (<h3>Loading...</h3>)}
                     </div>
                 </div>

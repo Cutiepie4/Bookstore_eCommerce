@@ -20,20 +20,6 @@ export const bookSlice = createSlice({
         [fetchBooks.pending]: (state) => {
             state.isLoading = true;
         },
-        [addBook.pending]: (state) => {
-            state.isLoading = true;
-        },
-        [addBook.fulfilled]: (state, action) => {
-            state.isLoading = false;
-            state.listBooks = action.payload;
-        },
-        [updateBook.pending]: (state) => {
-            state.isLoading = true;
-        },
-        [updateBook.fulfilled]: (state, action) => {
-            state.listBooks = action.payload;
-            state.isLoading = false;
-        },
         [deleteBook.pending]: (state) => {
             state.isLoading = true;
         },

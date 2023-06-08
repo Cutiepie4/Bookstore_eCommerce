@@ -1,6 +1,8 @@
 package com.ptit.model.entity;
 
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,30 +13,34 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
-@AllArgsConstructor
+@Entity
 @NoArgsConstructor
-@Table(name = "comments")
-public class Comment {
+@AllArgsConstructor
+public class Orders {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "username")
 	private User user;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "book_id")
-	private Book book;
+	@Column(columnDefinition = "nvarchar(255)", nullable = false)
+	private String name, address;
 	
-	@Column(columnDefinition = "nvarchar(MAX)")
-	private String comment;
+	@Column(nullable = false)
+	private String phoneNumber;
+
+	private Timestamp time;
+
+	@Column(nullable = false)
+	private String orderStatus;
 	
-	private Date date;
+	@Column(nullable = false)
+	private String paymentStatus;
 }

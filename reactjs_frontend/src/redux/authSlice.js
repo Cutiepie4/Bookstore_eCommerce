@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { login } from "./loginApi";
 import authService from "../service/AuthenticationService";
-import { toast } from "react-toastify";
 
 let initialState = {
     isLoggedIn: authService.getToken() === null ? false : true,
@@ -38,5 +37,5 @@ const authSlice = createSlice({
     }
 })
 
-export const { logout, test } = authSlice.actions;
+export const { logout } = authSlice.actions;
 export default authSlice.reducer

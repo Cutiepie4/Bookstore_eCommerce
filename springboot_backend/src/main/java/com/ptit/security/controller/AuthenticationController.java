@@ -16,6 +16,9 @@ import com.ptit.security.auth.AuthenticationResponse;
 import com.ptit.security.service.AuthenticationService;
 import com.ptit.service.UserRoleService;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api/auth")

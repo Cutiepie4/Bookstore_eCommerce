@@ -8,6 +8,7 @@ import { deleteComment, fetchComments, postComment } from '../redux/commentApi';
 import Rating from 'react-rating';
 import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import { getRating, postRating } from '../redux/ratingApi';
+import { toast } from 'react-toastify';
 
 function BookDetail(props) {
     const dispatch = useDispatch();
@@ -55,6 +56,10 @@ function BookDetail(props) {
     }, [id])
 
     const handlePostComment = async () => {
+        if (vote === 0) {
+            toast.info('You must rating before comment.');
+            return;
+        }
         const newComment = await postComment({ username, bookId: currentCart.book.id, comment: currentComment });
         setListCommments([...listComments, newComment]);
         setCurrentComment('');
@@ -119,8 +124,7 @@ function BookDetail(props) {
                                     <h4 className="mb-0">Recent comments</h4>
                                     <p className="fw-light mb-4">Latest Comments section by users</p>
                                 </div>
-
-                                {listComments.length !== 0 ? listComments.map(comment => comment && (
+                                {listComments.length > 0 ? listComments.map(comment => comment && (
                                     <div key={comment.id}>
                                         <div className="card-body p-4" >
                                             <div className="d-flex flex-start">
@@ -129,7 +133,7 @@ function BookDetail(props) {
                                                     height="60" />
                                                 <div>
                                                     <h6 className="fw-bold mb-1" style={{ color: 'red' }}>{comment.user.username}</h6>
-                                                    <div className="d-flex align-items-center mb-3">
+                                                    <div className="d-flex align-items-center mb-2">
                                                         <p className="mb-0 text-muted">
                                                             {formatDate(comment.date)}
                                                         </p>
@@ -137,6 +141,14 @@ function BookDetail(props) {
                                                             <i className="fa-solid fa-trash fa-sm currentCart-quantity ms-2"></i>
                                                         </div>}
                                                     </div>
+                                                    <Rating
+                                                        className='mb-3'
+                                                        initialRating={comment.vote}
+                                                        emptySymbol={<FaStar className="star-empty" />}
+                                                        fullSymbol={<FaStar className="star-full" />}
+                                                        halfSymbol={<FaStarHalfAlt className="star-half" />}
+                                                        readonly={true}
+                                                    />
                                                     <p className="mb-0">
                                                         {comment.comment}
                                                     </p>
@@ -150,7 +162,7 @@ function BookDetail(props) {
                         </div>
                     </div>
                 </div>
-            </section >
+            </section>
             <section>
                 <div className="container my-5 py-5 text-dark">
                     <div className="row d-flex justify-content-center">
@@ -160,9 +172,8 @@ function BookDetail(props) {
                                     <div className="d-flex flex-start w-100">
                                         <div className="w-100">
                                             {isLoggedIn ? (<>
-                                                <h5>You can post your comment here</h5>
-                                                <div className="align-items-center justify-content-center">
-                                                    <p className='mb-2'>Rating here</p>
+                                                <h5 className='mb-2'>Rating:</h5>
+                                                <div className="align-items-center justify-content-center mb-3">
                                                     <Rating
                                                         initialRating={vote}
                                                         emptySymbol={<FaStar className="star-empty" />}
@@ -170,11 +181,11 @@ function BookDetail(props) {
                                                         halfSymbol={<FaStarHalfAlt className="star-half" />}
                                                         onChange={newVote => setVote(newVote)}
                                                     />
-                                                    <span className="book-voters card-vote"></span>
-                                                    <button className='btn btn-primary btn-sm' onClick={handleVoting}>Vote</button>
+                                                    <button className='btn btn-primary btn-sm ms-2' onClick={handleVoting}>Vote</button>
                                                 </div>
+                                                <h5>You can post your comment:</h5>
                                                 <div className="form-outline">
-                                                    <label className="form-label my-3" htmlFor="textAreaExample">What is your opinion?</label>
+                                                    <label className="form-label mb-3" htmlFor="textAreaExample">What is your opinion?</label>
                                                     <textarea className="form-control" id="textAreaExample" rows="4" value={currentComment} onChange={e => setCurrentComment(e.target.value)}></textarea>
                                                 </div>
                                                 <div className="d-flex float-end mt-3">

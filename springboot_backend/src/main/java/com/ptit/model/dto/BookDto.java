@@ -2,7 +2,6 @@ package com.ptit.model.dto;
 
 import java.sql.Date;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
